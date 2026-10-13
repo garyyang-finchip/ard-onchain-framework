@@ -1,0 +1,16 @@
+{
+  "name": "ard-onchain-framework",
+  "version": "0.3.0",
+  "description": "Agentic Resource Discovery (ARD) Onchain - draft ERC, reference kernel and adapters, vectors, gateway",
+  "private": true,
+  "license": "CC0-1.0",
+  "scripts": {
+    "vectors": "node tools/vectors.js",
+    "gateway": "node tools/gateway/server.js",
+    "gateway:test": "node tools/gateway/test.js"
+  },
+  "dependencies": {
+    "canonicalize": "^2.0.0",
+    "ethers": "^6.13.0"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "ranAt": "2026-10-13T04:14:59.107Z",
+  "chainId": 31337,
+  "steps": [
+    "kernel 0x5fbdb2315678afecb367f032d93f642f64180aa3, kinds registered, real skill/task/AID contracts deployed",
+    "anchors: skill #1 (alice), funded tender #1 (bob), AID-active identity (carol)",
+    "records registered: skill, task, agent, registry, plus one with a descriptor hash mismatch",
+    "claims: alice + mallory claim alice.example (alice acknowledged), carol claims carol.example (unacknowledged), operator claims registry.example (acknowledged)",
+    "gateway up at http://127.0.0.1:9011/api/v1/ serving 4 entries, 1 excluded",
+    "skill: canonical URN served, binding verified, level 2, anchor + descriptor hash exposed",
+    "task: unclaimed publisher domain -> third-party binding, alias identifier, level 2 while escrowed",
+    "agent: claimed-but-unacknowledged domain -> alias identifier, level 2 via active identity",
+    "registry: verified binding, level capped at 1 onchain",
+    "POST /search: ranking, value:kind filter, referrals, pagination, 400 on missing text",
+    "POST /explore: facets by value:kind and type (both request shapes)",
+    "GET /agents: deterministic listing with a filter",
+    "/.well-known/ard.json: the gateway lists itself and every served record",
+    "ARD conformance CLI (vendored, schema mode): manifest PASS — CONFORMANCE STATUS: PASS | Validated with 0 critical specification errors and 0 warnings and 2 informational messages.",
+    "ARD conformance CLI (vendored): registry PASS — CONFORMANCE STATUS: PASS | Validated with 0 critical specification errors and 0 warnings.",
+    "skill transferred to mallory: binding contested, canonical URN stale, served under alias",
+    "skill package updated under the old descriptor: provenance mismatch -> level 1",
+    "tender cancelled: level 1",
+    "agent record retired: dropped from search, still inspectable at /records/<id>"
+  ]
+}

@@ -1,10 +1,8 @@
-# Vendored ARD material (placeholder)
+# Vendored ARD material
 
-The ERC text cannot hyperlink to the ARD specification site or repository: the ERCs repository's link linter only admits an allow-list of external domains. The ERC therefore names the specification without a link and relies on a pinned copy of the parts it depends on, vendored here under the upstream Apache-2.0 license.
+Copied verbatim from the Agentic Resource Discovery specification repository (github.com/ards-project/ard-spec), commit `49eb4df6f3841ccecc5c31d5175117337b568bdf` (2026-10-11), specification v0.91, under the Apache License, Version 2.0 (`LICENSE` in this directory). The ERC text names the specification without a hyperlink because the ERCs repository's link linter admits only an allow-list of external domains; the parts the ERC depends on are pinned here instead.
 
-To vendor before filing:
+- `ard-entry.schema.json` — JSON Schema (draft 2020-12) for an ARD entry and an ARD manifest; every example descriptor and the gateway manifest in `../../examples/` validate against it.
+- `ard.context.jsonld` — the default JSON-LD context (`https://agenticresourcediscovery.org/context/v1`).
 
-- `spec/schemas/` JSON Schema for the ARD entry (and CDDL / OpenAPI for the registry interface if the ERC text references them)
-- the upstream `LICENSE` (Apache-2.0) and a `NOTICE` naming the ards-project working group and the exact spec version (v0.91) and commit
-
-Nothing in this directory is normative for this ERC beyond what the ERC text explicitly cites.
+Nothing in this directory is normative for the ERC beyond what the ERC text explicitly cites.

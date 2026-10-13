@@ -1,0 +1,16 @@
+[profile.default]
+src = "assets/erc-9999/contracts"
+test = "test"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.24"
+optimizer = true
+optimizer_runs = 200
+via_ir = false
+fs_permissions = [
+  { access = "read", path = "./assets/erc-9999/vectors" },
+  { access = "read-write", path = "./deployments" },
+]
+
+[fmt]
+line_length = 100
