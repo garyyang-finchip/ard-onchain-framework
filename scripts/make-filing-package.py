@@ -103,6 +103,10 @@ def lint_erc(text, number, discussions_ok):
         seen.add(n)
         if not (mm.group(1) and mm.group(4) and mm.group(5) == n):
             errors.append(f"first mention of {mm.group(2)}-{n} is not a link to ./eip-{n}.md")
+    # eipw markdown-no-backticks: no proposal reference (eip-N / erc-N, any case) inside an inline code span
+    for span in re.findall(r"`([^`\n]*)`", re.sub(r"```.*?```", "", body, flags=re.S)):
+        if re.search(r"(?i)(eip|erc)-[0-9]+", span):
+            errors.append(f"proposal reference inside backticks (eipw markdown-no-backticks): `{span}`")
     sec = re.search(r"^## Security Considerations\n(.*?)^## Copyright", body, re.S | re.M)
     if sec and RFC2119.search(sec.group(1)):
         errors.append("RFC 2119 keywords inside Security Considerations")
