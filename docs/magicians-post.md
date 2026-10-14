@@ -1,6 +1,6 @@
 # Draft ERC: Agentic Resource Discovery (ARD) Onchain — an address-rooted value registry whose records are ARD entries
 
-*(Ethereum Magicians thread draft. Category: ERCs. Post as is, then set `discussions-to` to the thread URL and run `scripts/make-filing-package.py --discussions <url> --allow-tbd` before opening the pull request.)*
+*(Posted on Ethereum Magicians on 2026-10-13 as topic 29963: https://ethereum-magicians.org/t/draft-erc-agentic-resource-discovery-ard-onchain-an-address-rooted-value-registry-whose-records-are-ard-entries/29963 . `discussions-to` in `ERCS/erc-9999.md` points there; the filing package is built with `scripts/make-filing-package.py`.)*
 
 **Repository:** https://github.com/garyyang-finchip/ard-onchain-framework
 **PR:** to be added after filing
