@@ -115,7 +115,7 @@ async function createGateway(cfg) {
 
   function manifest() {
     return {
-      '@context': ['https://agenticresourcediscovery.org/context/v1', { value: 'https://eips.ethereum.org/assets/eip-9999/ns#' }],
+      '@context': ['https://agenticresourcediscovery.org/context/v1', { value: 'https://eips.ethereum.org/assets/eip-8444/ns#' }],
       ...(cfg.operator ? { 'value:controllers': [`did:pkh:eip155:${chainId}:${cfg.operator.toLowerCase()}`] } : {}),
       entries: [selfEntry(), ...state.entries],
     };

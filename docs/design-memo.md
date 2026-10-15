@@ -1,6 +1,6 @@
 # ARD Onchain — design memo v0.2
 
-Status: design round 3 (2026-10-13). Companion to `ERCS/erc-9999.md`; the ERC text is normative, this memo records the reasoning and the decisions log.
+Status: design round 3 (2026-10-13); filed as ethereum/ERCs#2073 and assigned ERC-8444 on 2026-10-15, deployed on Sepolia the same day (`docs/sepolia-evidence.md`). Companion to `ERCS/erc-8444.md`; the ERC text is normative, this memo records the reasoning and the decisions log.
 
 ## 1. One sentence
 
@@ -58,7 +58,7 @@ Other rulings taken while building: `Retired` is terminal and binds later holder
 
 ## 7. Upstream proposals (ards-project)
 
-1. `application/ai-task+json` as a demand-side entry type; the payload in `assets/erc-9999/schemas/ai-task.schema.json` is valid without any onchain member.
+1. `application/ai-task+json` as a demand-side entry type; the payload in `assets/erc-8444/schemas/ai-task.schema.json` is valid without any onchain member.
 2. A rule for `trustManifest.identity` given as a DID: alignment with the URN's publisher domain through a published binding (the acknowledgment of section 5).
 3. A registered `value` context, or a general note on value extensions.
 
@@ -66,4 +66,4 @@ To be opened with the example JSON and the gateway attached, after the Magicians
 
 ## 8. Filing notes
 
-Title 40 characters, no "standard"; `requires` 165, 712, 1271 only; companion drafts referenced descriptively (their numbers never appear in the ERC text); no external links except rfc-editor.org; ARD schema vendored under Apache-2.0; asset links written `../assets/eip-9999/…` and never to directories. `scripts/make-filing-package.py` lints all of this.
+Title 40 characters, no "standard"; `requires` 165, 712, 1271 only; companion drafts referenced descriptively (their numbers never appear in the ERC text); no external links except rfc-editor.org; ARD schema vendored under Apache-2.0; asset links written `../assets/eip-8444/…` and never to directories. `scripts/make-filing-package.py` lints all of this.

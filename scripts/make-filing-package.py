@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build and lint the ethereum/ERCs submission package for the ARD Onchain proposal.
 
-Source of truth: ERCS/erc-9999.md and assets/erc-9999/{contracts,schemas,examples,vectors,vendor}.
+Source of truth: ERCS/erc-8444.md and assets/erc-8444/{contracts,schemas,examples,vectors,vendor}.
 The package mirrors the ERCs repository layout:
 
     <out>/ERCS/erc-<N>.md
@@ -9,8 +9,8 @@ The package mirrors the ERCs repository layout:
                                      because the ERCs site build renames erc-* to eip-*)
 
 Usage:
-    python3 scripts/make-filing-package.py --allow-tbd                 # dry run with the 9999 placeholder
-    python3 scripts/make-filing-package.py --number 8NNN --discussions https://ethereum-magicians.org/t/...
+    python3 scripts/make-filing-package.py                              # ERC-8444, discussions-to as in the source
+    python3 scripts/make-filing-package.py --discussions https://ethereum-magicians.org/t/...   # override the thread URL
 
 The script exits non-zero when any lint fails. The lints approximate the ERCs CI (eipw + HTMLProofer) and
 the repository rule "no Chinese in any shipped file"; they are not a substitute for CI.
@@ -18,9 +18,10 @@ the repository rule "no Chinese in any shipped file"; they are not a substitute 
 import argparse, os, re, shutil, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC_MD = os.path.join(ROOT, "ERCS", "erc-9999.md")
-SRC_ASSETS = os.path.join(ROOT, "assets", "erc-9999")
-PLACEHOLDER = "9999"
+SOURCE_NUMBER = "8444"  # assigned by the ERCs editors on PR ethereum/ERCs#2073
+SRC_MD = os.path.join(ROOT, "ERCS", f"erc-{SOURCE_NUMBER}.md")
+SRC_ASSETS = os.path.join(ROOT, "assets", f"erc-{SOURCE_NUMBER}")
+PLACEHOLDER = SOURCE_NUMBER  # the number carried by the source files; rewritten only when --number differs
 ASSET_SUBDIRS = ("contracts", "schemas", "examples", "vectors", "vendor")
 
 # Companion drafts not merged into ethereum/ERCs: a literal "ERC-N" would need a link to a file that does
@@ -132,10 +133,10 @@ def check_asset_links(body, number, pkg_root):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--number", default=PLACEHOLDER, help="ERC number to file under")
+    ap.add_argument("--number", default=SOURCE_NUMBER, help="ERC number to file under (default: the assigned 8444)")
     ap.add_argument("--discussions", default=None, help="Ethereum Magicians thread URL for discussions-to")
     ap.add_argument("--out", default=os.path.join(ROOT, "ercs-pr-package"))
-    ap.add_argument("--allow-tbd", action="store_true", help="allow a TBD discussions-to (dry run only)")
+    ap.add_argument("--allow-tbd", action="store_true", help="allow a TBD discussions-to (dry runs only)")
     args = ap.parse_args()
     number = args.number
 

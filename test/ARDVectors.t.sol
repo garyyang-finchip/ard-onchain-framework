@@ -4,19 +4,19 @@ pragma solidity ^0.8.24;
 import {Test} from "forge-std/Test.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 
-import {ARDOnchainRegistry} from "../assets/erc-9999/contracts/ARDOnchainRegistry.sol";
-import {IARDOnchainRegistry} from "../assets/erc-9999/contracts/interfaces/IARDOnchainRegistry.sol";
-import {IARDKindAdapter} from "../assets/erc-9999/contracts/interfaces/IARDKindAdapter.sol";
-import {ISkillTokenKernel} from "../assets/erc-9999/contracts/adapters/interfaces/ISkillTokenKernel.sol";
-import {ITaskTenderKernel} from "../assets/erc-9999/contracts/adapters/interfaces/ITaskTenderKernel.sol";
-import {ARDKinds} from "../assets/erc-9999/contracts/libraries/ARDKinds.sol";
+import {ARDOnchainRegistry} from "../assets/erc-8444/contracts/ARDOnchainRegistry.sol";
+import {IARDOnchainRegistry} from "../assets/erc-8444/contracts/interfaces/IARDOnchainRegistry.sol";
+import {IARDKindAdapter} from "../assets/erc-8444/contracts/interfaces/IARDKindAdapter.sol";
+import {ISkillTokenKernel} from "../assets/erc-8444/contracts/adapters/interfaces/ISkillTokenKernel.sol";
+import {ITaskTenderKernel} from "../assets/erc-8444/contracts/adapters/interfaces/ITaskTenderKernel.sol";
+import {ARDKinds} from "../assets/erc-8444/contracts/libraries/ARDKinds.sol";
 
 /// @dev Cross-language vectors: every value produced by tools/vectors.js (ethers v6 + RFC 8785) is
 ///      re-derived here with solc. A drift on either side fails these tests.
 contract ARDVectorsTest is Test {
     using stdJson for string;
 
-    string internal constant DIR = "assets/erc-9999/vectors/";
+    string internal constant DIR = "assets/erc-8444/vectors/";
 
     function _load(string memory file) internal view returns (string memory) {
         return vm.readFile(string.concat(vm.projectRoot(), "/", DIR, file));

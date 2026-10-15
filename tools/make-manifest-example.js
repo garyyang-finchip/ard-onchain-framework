@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Rebuilds assets/erc-9999/examples/well-known-ard.json from the authored examples: a gateway
+// Rebuilds assets/erc-8444/examples/well-known-ard.json from the authored examples: a gateway
 // manifest that lists itself (registry.json) and serves skill.json under a gateway alias with
 // resolved facets. Keeping the alias entry derived guarantees that its content members hash to the
 // same descriptorHash as the authored entry (see vectors/descriptor-hash.json).
@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const ard = require('./lib/ard');
 
-const EX = path.resolve(__dirname, '..', 'assets', 'erc-9999', 'examples');
+const EX = path.resolve(__dirname, '..', 'assets', 'erc-8444', 'examples');
 const skill = JSON.parse(fs.readFileSync(path.join(EX, 'skill.json'), 'utf8'));
 const registry = JSON.parse(fs.readFileSync(path.join(EX, 'registry.json'), 'utf8'));
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Regenerates assets/erc-9999/vectors/*.json. Every value here is re-derived in Solidity by
+// Regenerates assets/erc-8444/vectors/*.json. Every value here is re-derived in Solidity by
 // test/ARDVectors.t.sol, so the ethers/JS side and the solc side must agree byte for byte.
 'use strict';
 
@@ -9,8 +9,8 @@ const { ethers } = require('ethers');
 const ard = require('./lib/ard');
 
 const ROOT = path.resolve(__dirname, '..');
-const VEC = path.join(ROOT, 'assets', 'erc-9999', 'vectors');
-const EX = path.join(ROOT, 'assets', 'erc-9999', 'examples');
+const VEC = path.join(ROOT, 'assets', 'erc-8444', 'vectors');
+const EX = path.join(ROOT, 'assets', 'erc-8444', 'examples');
 fs.mkdirSync(VEC, { recursive: true });
 
 function write(name, obj) {

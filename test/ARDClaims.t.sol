@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 import {ARDBase} from "./ARDBase.t.sol";
-import {IARDOnchainRegistry} from "../assets/erc-9999/contracts/interfaces/IARDOnchainRegistry.sol";
+import {IARDOnchainRegistry} from "../assets/erc-8444/contracts/interfaces/IARDOnchainRegistry.sol";
 import {MockERC1271Wallet} from "./fixtures/aid/mocks/MockIdentityRegistry8004.sol";
 
 contract ARDClaimsTest is ARDBase {

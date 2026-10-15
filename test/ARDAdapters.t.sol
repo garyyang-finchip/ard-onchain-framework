@@ -2,13 +2,13 @@
 pragma solidity ^0.8.24;
 
 import {ARDBase} from "./ARDBase.t.sol";
-import {IARDOnchainRegistry} from "../assets/erc-9999/contracts/interfaces/IARDOnchainRegistry.sol";
-import {ARDKinds} from "../assets/erc-9999/contracts/libraries/ARDKinds.sol";
-import {ISkillTokenKernel} from "../assets/erc-9999/contracts/adapters/interfaces/ISkillTokenKernel.sol";
-import {ITaskTenderKernel} from "../assets/erc-9999/contracts/adapters/interfaces/ITaskTenderKernel.sol";
+import {IARDOnchainRegistry} from "../assets/erc-8444/contracts/interfaces/IARDOnchainRegistry.sol";
+import {ARDKinds} from "../assets/erc-8444/contracts/libraries/ARDKinds.sol";
+import {ISkillTokenKernel} from "../assets/erc-8444/contracts/adapters/interfaces/ISkillTokenKernel.sol";
+import {ITaskTenderKernel} from "../assets/erc-8444/contracts/adapters/interfaces/ITaskTenderKernel.sol";
 import {ISkillToken} from "./fixtures/skill-token/interfaces/ISkillToken.sol";
 import {ITaskTender} from "./fixtures/task-token/interfaces/ITaskTender.sol";
-import {AgentAdapter} from "../assets/erc-9999/contracts/adapters/AgentAdapter.sol";
+import {AgentAdapter} from "../assets/erc-8444/contracts/adapters/AgentAdapter.sol";
 
 /// @dev A contract that looks like an NFT but does not declare the skill or tender kernel interface.
 contract PlainNFT {

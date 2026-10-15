@@ -3,14 +3,14 @@ pragma solidity ^0.8.24;
 
 import {Test} from "forge-std/Test.sol";
 
-import {ARDOnchainRegistry} from "../assets/erc-9999/contracts/ARDOnchainRegistry.sol";
-import {IARDOnchainRegistry} from "../assets/erc-9999/contracts/interfaces/IARDOnchainRegistry.sol";
-import {IARDKindAdapter} from "../assets/erc-9999/contracts/interfaces/IARDKindAdapter.sol";
-import {ARDKinds} from "../assets/erc-9999/contracts/libraries/ARDKinds.sol";
-import {SkillAdapter} from "../assets/erc-9999/contracts/adapters/SkillAdapter.sol";
-import {TaskAdapter} from "../assets/erc-9999/contracts/adapters/TaskAdapter.sol";
-import {AgentAdapter} from "../assets/erc-9999/contracts/adapters/AgentAdapter.sol";
-import {RegistryAdapter} from "../assets/erc-9999/contracts/adapters/RegistryAdapter.sol";
+import {ARDOnchainRegistry} from "../assets/erc-8444/contracts/ARDOnchainRegistry.sol";
+import {IARDOnchainRegistry} from "../assets/erc-8444/contracts/interfaces/IARDOnchainRegistry.sol";
+import {IARDKindAdapter} from "../assets/erc-8444/contracts/interfaces/IARDKindAdapter.sol";
+import {ARDKinds} from "../assets/erc-8444/contracts/libraries/ARDKinds.sol";
+import {SkillAdapter} from "../assets/erc-8444/contracts/adapters/SkillAdapter.sol";
+import {TaskAdapter} from "../assets/erc-8444/contracts/adapters/TaskAdapter.sol";
+import {AgentAdapter} from "../assets/erc-8444/contracts/adapters/AgentAdapter.sol";
+import {RegistryAdapter} from "../assets/erc-8444/contracts/adapters/RegistryAdapter.sol";
 
 import {SkillToken} from "./fixtures/skill-token/SkillToken.sol";
 import {TaskToken} from "./fixtures/task-token/TaskToken.sol";

@@ -1,9 +1,9 @@
 # Draft ERC: Agentic Resource Discovery (ARD) Onchain — an address-rooted value registry whose records are ARD entries
 
-*(Posted on Ethereum Magicians on 2026-10-13 as topic 29963: https://ethereum-magicians.org/t/draft-erc-agentic-resource-discovery-ard-onchain-an-address-rooted-value-registry-whose-records-are-ard-entries/29963 . `discussions-to` in `ERCS/erc-9999.md` points there; the filing package is built with `scripts/make-filing-package.py`.)*
+*(Posted on Ethereum Magicians on 2026-10-13 as topic 29963; after the number was assigned the thread was retitled `ERC-8444: Agentic Resource Discovery (ARD) Onchain` and now lives at https://ethereum-magicians.org/t/erc-8444-agentic-resource-discovery-ard-onchain/29963 . `discussions-to` in `ERCS/erc-8444.md` points there; the filing package is built with `scripts/make-filing-package.py`.)*
 
 **Repository:** https://github.com/garyyang-finchip/ard-onchain-framework
-**PR:** to be added after filing
+**PR:** https://github.com/ethereum/ERCs/pull/2073 (assigned ERC-8444)
 
 ## What this is
 
@@ -19,7 +19,7 @@ The kernel is thin: kind, anchor, a content hash of the descriptor (JCS + SHA-25
 
 ## What is in the repository
 
-- The draft text (`ERCS/erc-9999.md`, placeholder number) — self-contained; companion drafts are referenced descriptively.
+- The draft text (`ERCS/erc-8444.md`) — self-contained; companion drafts are referenced descriptively.
 - Reference kernel + four adapters (Solidity, Foundry), 43 tests against the real vendored skill token, task tender and agent identity contracts, cross-language vectors (ethers v6 + RFC 8785 ↔ solc).
 - A Node.js resolver/gateway that indexes the kernel and serves `POST /search`, `POST /explore`, `GET /agents` and `/.well-known/ard.json`; an end-to-end run on anvil covering all four kinds, a hash-mismatch record, binding states, a transfer that makes a canonical URN stale, a provenance drift and a cancelled tender; the official ARD conformance CLI (vendored, schema mode) passes against the gateway with 0 errors and 0 warnings.
 
@@ -31,3 +31,7 @@ The kernel is thin: kind, anchor, a content hash of the descriptor (JCS + SHA-25
 4. The `task` payload (`application/ai-task+json`) — anything missing before I propose it upstream?
 
 Sepolia deployment and the upstream proposals follow once the thread exists.
+
+---
+
+**Update (2026-10-15):** filed as ethereum/ERCs#2073 and assigned ERC-8444; thread title updated to match. The reference deployment is on Sepolia — kernel `0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A`, one record per kind anchored to a token-bound skill, the live token-bound tender kernel (`0xA620…dDb7`, tender #17 with escrow), an address bound to the official ERC-8004 Identity Registry (agentId 10855) and a gateway endpoint, plus a domain claim, a skill transfer and a tender cancellation; the gateway serves the records as ARD entries and the official conformance CLI passes against them. Addresses, transactions and the resolved state: `docs/sepolia-evidence.md` in the repository.

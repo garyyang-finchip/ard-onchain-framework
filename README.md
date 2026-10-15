@@ -2,7 +2,7 @@
 
 > **Agentic Resource Discovery (ARD) Onchain** — an address-rooted onchain value registry whose records are conformant ARD entries.
 
-**Status:** design round 3 (2026-10-13) — draft ERC text (`ERCS/erc-9999.md`, placeholder number), reference kernel and four kind adapters (Solidity, Foundry, 43 tests against the real vendored companion contracts), cross-language vectors (ethers v6 + RFC 8785 ↔ solc), a Node.js resolver/gateway that passes the official ARD conformance CLI, and the Sepolia evidence script rehearsed on anvil. Not yet filed; not yet deployed on Sepolia.
+**Status:** filed as [ethereum/ERCs#2073](https://github.com/ethereum/ERCs/pull/2073) and assigned **ERC-8444** (2026-10-15; discussion: [Ethereum Magicians 29963](https://ethereum-magicians.org/t/erc-8444-agentic-resource-discovery-ard-onchain/29963)). Contents: the ERC text (`ERCS/erc-8444.md`), reference kernel and four kind adapters (Solidity, Foundry, 43 tests against the real vendored companion contracts), cross-language vectors (ethers v6 + RFC 8785 ↔ solc), a Node.js resolver/gateway that passes the official ARD conformance CLI, and the **Sepolia reference deployment** (2026-10-15, kernel [`0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A`](https://sepolia.etherscan.io/address/0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A)) with one record per kind, documented in `docs/sepolia-evidence.md`.
 
 ## What it is
 
@@ -18,23 +18,25 @@ Companion drafts anchored in v1: token-bound executable skills (ERC-8338), token
 ## Repository
 
 ```
-ERCS/erc-9999.md                     draft ERC text (self-contained; placeholder number 9999)
+ERCS/erc-8444.md                     the ERC text (self-contained; as filed in ethereum/ERCs#2073)
 docs/design-memo.md                  design memo v0.2 — principles, object model, decisions log, upstream proposals
 docs/test-record.md                  toolchain, sizes, full test list, gateway e2e steps, conformance results, limitations
-docs/magicians-post.md               draft of the Ethereum Magicians thread
-docs/sepolia-runbook.md              how to produce the Sepolia evidence set
-assets/erc-9999/contracts/           ARDOnchainRegistry (kernel), interfaces/, adapters/ (Skill, Task, Agent, Registry), libraries/
-assets/erc-9999/schemas/             value-context.jsonld, ai-task.schema.json
-assets/erc-9999/examples/            one authored descriptor per kind + a gateway /.well-known/ard.json
-assets/erc-9999/vectors/             kind-ids, record-id, domain-claim (EIP-712), descriptor-hash (JCS), alias, interface-ids
-assets/erc-9999/vendor/ard/          ARD entry schema + context, Apache-2.0, pinned to ard-spec commit 49eb4df6
+docs/magicians-post.md               the Ethereum Magicians thread opener
+docs/sepolia-runbook.md              how the Sepolia evidence set is produced (Foundry script or offline signing)
+docs/sepolia-evidence.md             the Sepolia deployment: addresses, anchors, records, resolved state, transactions
+deployments/                         sepolia.json, sepolia-cases.json, sepolia-descriptors.json, the finchip.ai acknowledgment
+assets/erc-8444/contracts/           ARDOnchainRegistry (kernel), interfaces/, adapters/ (Skill, Task, Agent, Registry), libraries/
+assets/erc-8444/schemas/             value-context.jsonld, ai-task.schema.json
+assets/erc-8444/examples/            one authored descriptor per kind + a gateway /.well-known/ard.json
+assets/erc-8444/vectors/             kind-ids, record-id, domain-claim (EIP-712), descriptor-hash (JCS), alias, interface-ids
+assets/erc-8444/vendor/ard/          ARD entry schema + context, Apache-2.0, pinned to ard-spec commit 49eb4df6
 test/                                Foundry suites; test/fixtures/ = vendored real skill token, task tender kernel, AID registry
 tools/lib/ard.js                     resolver-side profile helpers (member classes, JCS hash, record ids, aliases, EIP-712 claim)
 tools/vectors.js                     regenerates the vectors
 tools/make-manifest-example.js       rebuilds the gateway manifest example from the authored examples
 tools/gateway/                       the reference resolver/gateway (server.js) and its anvil end-to-end test (test.js)
 tools/conformance/                   the official ARD conformance CLI, vendored (Apache-2.0)
-tools/make-sepolia-descriptors.js    descriptors + hashes for the evidence run
+tools/make-sepolia-descriptors.js    authors the four Sepolia descriptors (hashes, data: URIs) and the domain acknowledgment file
 script/SepoliaEvidence.s.sol         Foundry script: deploy, anchors, records, transfer, close
 scripts/make-filing-package.py       builds and lints the ethereum/ERCs submission package
 ```
@@ -47,7 +49,7 @@ forge build && forge test            # 43 tests
 npm install
 node tools/vectors.js                # regenerate vectors (after forge build, for the interface ids)
 node tools/gateway/test.js           # anvil end-to-end + ARD conformance CLI (needs python3; `pip install jsonschema` for schema mode)
-python3 scripts/make-filing-package.py --allow-tbd   # lint the ERC text and assets
+python3 scripts/make-filing-package.py               # build + lint the ethereum/ERCs package (ERC-8444)
 ```
 
 `foundry.toml` pins solc 0.8.24. Runtime sizes: kernel 9,922 bytes; adapters 470–1,933 bytes. ERC-165 ids: `IARDOnchainRegistry` `0x881908a5`, `IARDKindAdapter` `0x67bde273`.
@@ -61,19 +63,29 @@ node tools/gateway/server.js --rpc https://<rpc> --registry 0x<kernel> --domain 
 
 See `tools/gateway/README.md`. The gateway serves `POST /search`, `POST /explore`, `GET /agents`, `GET /records/<id>` and `/.well-known/ard.json`; every served record carries `value:anchor` and `value:descriptorHash` so that any client can verify it against the chain.
 
+## Sepolia deployment
+
+| contract | address |
+|---|---|
+| `ARDOnchainRegistry` (kernel) | `0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A` |
+| `SkillAdapter` / `TaskAdapter` / `AgentAdapter` / `RegistryAdapter` | `0x08Be92a9446592fAeaaB976556e09e028662F12F` / `0x0BAB1fEE185A4803a1aC65F6dA59941eeCaE71dB` / `0x38898d038F4a8fCE3e13447bE7Eb1ECd128cE25C` / `0x32C85829da0be0Fd66ac45eF54d4c393Fcd7149E` |
+| `AIDRegistry` (reference) | `0x36E4a7BDe8a9D7d445042495180b64C7AF77Fd7E` |
+| `SkillToken` (reference fixture) | `0x82F20280D49F1DDC67e1840339dBbc534FEC8F97` |
+
+Anchored to the live token-bound tender kernel `0xA62059A498E40C4Ae4aF926E2B00C1Ff122bDdb7` and the official ERC-8004 Identity Registry `0x8004A818BFB912233c491871b3d84c89A494BD9e`. One record per kind, a domain claim, a skill transfer and a tender cancellation are on chain; the gateway serves the records and passes the conformance CLI against them. Details, transaction list and the resolved state: `docs/sepolia-evidence.md`.
+
 ## Filing
 
 ```bash
-python3 scripts/make-filing-package.py --number <N> --discussions https://ethereum-magicians.org/t/...
-# -> ercs-pr-package/ERCS/erc-<N>.md and ercs-pr-package/assets/erc-<N>/ ; the script lints the package
+python3 scripts/make-filing-package.py            # -> ercs-pr-package/ERCS/erc-8444.md + ercs-pr-package/assets/erc-8444/
 ```
 
-The script rejects literal references to unmerged drafts, external URLs other than rfc-editor.org, directory-style asset links, Chinese characters, missing first-mention links and RFC 2119 keywords inside Security Considerations.
+The package mirrors the ethereum/ERCs layout for PR #2073 (branch `add-erc-ard-onchain`). The script rejects literal references to unmerged drafts, external URLs other than rfc-editor.org, directory-style asset links, Chinese characters, missing first-mention links, proposal references inside backticks and RFC 2119 keywords inside Security Considerations.
 
 ## Upstream
 
-Three proposals to ards-project once the Magicians thread exists: `application/ai-task+json` as a demand-side entry type (the payload validates without any onchain member), an alignment rule for DID identities in `trustManifest.identity`, and a registered `value` context.
+Three proposals to ards-project, now that the thread and the deployment exist: `application/ai-task+json` as a demand-side entry type (the payload validates without any onchain member), an alignment rule for DID identities in `trustManifest.identity`, and a registered `value` context.
 
 ## License
 
-CC0-1.0 (`LICENSE.md`), except the vendored ARD material under `assets/erc-9999/vendor/ard/` and `tools/conformance/`, which stays under the Apache License 2.0.
+CC0-1.0 (`LICENSE.md`), except the vendored ARD material under `assets/erc-8444/vendor/ard/` and `tools/conformance/`, which stays under the Apache License 2.0.

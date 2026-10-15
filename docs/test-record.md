@@ -57,9 +57,13 @@ On anvil (chain 31337) with the real kernel, adapters, skill token, task token a
 
 The last run is recorded in `docs/gateway-e2e-last-run.json`.
 
+## Sepolia deployment — 2026-10-15, 23 transactions, all succeeded
+
+Chain 11155111, deployer `0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25`, blocks 11918355–11918600 (state read at 11918615). Kernel, four adapters, the reference AID registry and the reference skill token deployed; four kinds registered; one record per kind anchored to the reference skill token (#1), the live token-bound tender kernel (#17, 0.001 ETH escrowed), the deployer's address bound to agentId 10855 on the official ERC-8004 Identity Registry, and the gateway endpoint; `finchip.ai` claimed; skill transferred to a second holder; tender cancelled. The gateway served the four records and the conformance CLI passed in manifest mode (0 errors, 0 warnings, 2 informational) and registry mode (0 errors, 0 warnings). Gas: Sepolia's current schedule charged 15.66 M for the kernel deployment (9,922 runtime bytes) and 4.9–9.4 M per `register` with a 1.2–2.2 KB `data:` descriptor — several times anvil's default schedule — so all limits were taken from live `eth_estimateGas` calls. Full tables: `docs/sepolia-evidence.md`, `deployments/sepolia-cases.json`.
+
 ## Stated limitations
 
 - The gateway's `score` is a token-overlap stand-in for semantic relevance; ARD only requires a 0–100 integer and says the score is not a trust signal.
 - Descriptor fetching supports `data:`, `http(s):`, `file:` and `ipfs:` (through a configurable gateway); the e2e run uses `data:` URIs and local manifest overrides, so no network is involved.
 - Federation `auto` queries configured upstreams and merges by score; there is no de-duplication across registries beyond `value:anchor`.
-- No Sepolia deployment yet; the planned evidence set is in `docs/design-memo.md` §6.
+- The Sepolia run (`docs/sepolia-evidence.md`) was produced from a build environment without outbound RPC access: transactions were signed offline and relayed, and the gateway was exercised against a pinned-block replay of the recorded chain responses rather than a live endpoint. The commands to repeat the gateway run live are in that document.

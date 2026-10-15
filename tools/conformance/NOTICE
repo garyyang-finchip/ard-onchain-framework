@@ -5,4 +5,4 @@ Vendored verbatim from https://github.com/ards-project/ard-spec (conformance/bin
 commit 49eb4df6f3841ccecc5c31d5175117337b568bdf (2026-10-11), under the Apache License, Version 2.0
 (see LICENSE in this directory). Used by tools/gateway/test.js to probe the reference gateway. The tool
 expects the ARD entry schema at ../../spec/schemas/ard-entry.schema.json relative to its own location;
-the test copies it there from assets/erc-9999/vendor/ard/ at run time.
+the test copies it there from assets/erc-8444/vendor/ard/ at run time.

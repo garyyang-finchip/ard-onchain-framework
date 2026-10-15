@@ -17,7 +17,7 @@ const { createGateway } = require('./server');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const OUT = path.join(ROOT, 'out');
-const EX = path.join(ROOT, 'assets', 'erc-9999', 'examples');
+const EX = path.join(ROOT, 'assets', 'erc-8444', 'examples');
 const PORT = 9011;
 const RPC_PORT = 8547;
 const GATEWAY_DOMAIN = 'registry.example';
@@ -62,7 +62,7 @@ function conformance(args) {
   fs.mkdirSync(path.join(tmp, 'conformance', 'bin'), { recursive: true });
   fs.mkdirSync(path.join(tmp, 'spec', 'schemas'), { recursive: true });
   fs.copyFileSync(path.join(ROOT, 'tools', 'conformance', 'conformance-test'), path.join(tmp, 'conformance', 'bin', 'conformance-test'));
-  fs.copyFileSync(path.join(ROOT, 'assets', 'erc-9999', 'vendor', 'ard', 'ard-entry.schema.json'), path.join(tmp, 'spec', 'schemas', 'ard-entry.schema.json'));
+  fs.copyFileSync(path.join(ROOT, 'assets', 'erc-8444', 'vendor', 'ard', 'ard-entry.schema.json'), path.join(tmp, 'spec', 'schemas', 'ard-entry.schema.json'));
   // async: the gateway runs in this process, so the event loop must keep serving while the CLI probes it;
   // loopback must not be routed through an outbound proxy configured in the environment
   const env = { ...process.env, NO_PROXY: '127.0.0.1,localhost', no_proxy: '127.0.0.1,localhost' };

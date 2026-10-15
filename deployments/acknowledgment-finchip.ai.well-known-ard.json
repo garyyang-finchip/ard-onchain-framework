@@ -1,0 +1,158 @@
+{
+  "@context": [
+    "https://agenticresourcediscovery.org/context/v1",
+    {
+      "value": "https://eips.ethereum.org/assets/eip-8444/ns#"
+    }
+  ],
+  "value:controllers": [
+    "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
+    "did:pkh:eip155:11155111:0x81ecac174eba407efeb6698927d16dc6494ca60c"
+  ],
+  "entries": [
+    {
+      "@context": [
+        "https://agenticresourcediscovery.org/context/v1",
+        {
+          "value": "https://eips.ethereum.org/assets/eip-8444/ns#"
+        }
+      ],
+      "identifier": "urn:air:finchip.ai:skills:daily-finance-brief",
+      "displayName": "FinChip Daily Finance Brief",
+      "description": "Generates the daily global finance brief: 60-instrument dashboard, top headlines, short analysis. Sepolia evidence record of the ARD Onchain reference deployment.",
+      "type": "application/ai-skill+md",
+      "url": "https://finchip.ai/skills/daily-finance-brief/SKILL.md",
+      "tags": [
+        "finance",
+        "report",
+        "daily",
+        "sepolia-evidence"
+      ],
+      "capabilities": [
+        "DailyFinanceBrief"
+      ],
+      "representativeQueries": [
+        "generate today's global markets brief",
+        "daily finance report with crypto and FX dashboard",
+        "morning market summary as PDF"
+      ],
+      "version": "1.4.0",
+      "updatedAt": "2026-10-15T06:00:00Z",
+      "trustManifest": {
+        "identity": "finchip.ai"
+      },
+      "value:kind": "skill",
+      "value:controller": "did:pkh:eip155:11155111:0x81ecac174eba407efeb6698927d16dc6494ca60c",
+      "value:terms": {
+        "unit": "call",
+        "price": {
+          "amount": "0.0001",
+          "currency": "ETH",
+          "asset": "eip155:11155111/slip44:60"
+        }
+      },
+      "value:settlement": [
+        {
+          "rail": "onchain",
+          "payee": "eip155:11155111:0x81ecac174eba407efeb6698927d16dc6494ca60c",
+          "asset": "eip155:11155111/slip44:60"
+        }
+      ],
+      "value:provenance": {
+        "packageDigest": "sha256:2473da0a68d9f615c2167ec67af862665543c049bb254bbe3100a777a1c3144d",
+        "cardDigest": "sha256:30a18d1d73329fa02c81bca3e9c98ccb163325d5fafdefce913d1beee2fbad42"
+      }
+    },
+    {
+      "@context": [
+        "https://agenticresourcediscovery.org/context/v1",
+        {
+          "value": "https://eips.ethereum.org/assets/eip-8444/ns#"
+        }
+      ],
+      "identifier": "urn:air:finchip.ai:tenders:oracle-basis-feed",
+      "displayName": "Standing bounty: hourly BTC/ETH basis feed",
+      "description": "Pays per accepted delivery of a verified BTC and ETH perpetual basis feed. Two completions, judged by the publisher. Sepolia evidence tender of the ARD Onchain reference deployment, escrowed in the live token-bound tender kernel.",
+      "type": "application/ai-task+json",
+      "tags": [
+        "bounty",
+        "oracle",
+        "price-feed",
+        "sepolia-evidence"
+      ],
+      "representativeQueries": [
+        "tasks paying for price-feed delivery",
+        "who pays for hourly basis data",
+        "standing oracle bounties for agents"
+      ],
+      "updatedAt": "2026-10-15T06:00:00Z",
+      "trustManifest": {
+        "identity": "finchip.ai"
+      },
+      "data": {
+        "wants": [
+          "application/ai-skill+md",
+          "application/mcp-server-card+json"
+        ],
+        "specDigest": "sha256:69896dd46399e6362a246b981932e09569e79bac3ec3b3056d99b12295efa73b",
+        "specURI": "https://finchip.ai/tenders/oracle-basis-feed/spec.json",
+        "bounty": {
+          "amount": "0.0005",
+          "currency": "ETH",
+          "asset": "eip155:11155111/slip44:60"
+        },
+        "cardinality": "replicated",
+        "copies": 2,
+        "acceptance": {
+          "mode": "judge",
+          "ref": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25"
+        },
+        "deadlines": {
+          "settleBy": "2026-12-14T06:08:40Z",
+          "judgmentWindow": "P7D"
+        }
+      },
+      "value:kind": "task",
+      "value:controller": "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
+      "value:provenance": {
+        "packageDigest": "sha256:69896dd46399e6362a246b981932e09569e79bac3ec3b3056d99b12295efa73b",
+        "cardDigest": "sha256:ea83ec60fee323f9d4bb065bffbe3b5756415471f43df3737305530aa42ad8ef"
+      }
+    },
+    {
+      "@context": [
+        "https://agenticresourcediscovery.org/context/v1",
+        {
+          "value": "https://eips.ethereum.org/assets/eip-8444/ns#"
+        }
+      ],
+      "identifier": "urn:air:finchip.ai:agents:finch-analyst",
+      "displayName": "Finch Analyst",
+      "description": "Research agent that produces market briefs and fulfils price-feed tenders. Sepolia evidence identity of the ARD Onchain reference deployment, bound to its agent identity registration.",
+      "type": "application/a2a-agent-card+json",
+      "url": "https://finchip.ai/.well-known/agent-card.json",
+      "capabilities": [
+        "MarketBrief",
+        "PriceFeedDelivery"
+      ],
+      "representativeQueries": [
+        "an agent that writes daily market briefs",
+        "agent that can deliver hourly basis feeds"
+      ],
+      "updatedAt": "2026-10-15T06:00:00Z",
+      "trustManifest": {
+        "identity": "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25"
+      },
+      "value:kind": "agent",
+      "value:controller": "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
+      "value:registration": "https://finchip.ai/.well-known/agent-registration.json",
+      "value:settlement": [
+        {
+          "rail": "onchain",
+          "payee": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
+          "asset": "eip155:11155111/slip44:60"
+        }
+      ]
+    }
+  ]
+}
