@@ -2,7 +2,7 @@
 
 > **Agentic Resource Discovery (ARD) Onchain** — an address-rooted onchain value registry whose records are conformant ARD entries.
 
-**Status:** filed as [ethereum/ERCs#2073](https://github.com/ethereum/ERCs/pull/2073) and assigned **ERC-8444** (2026-10-15; discussion: [Ethereum Magicians 29963](https://ethereum-magicians.org/t/erc-8444-agentic-resource-discovery-ard-onchain/29963)). Contents: the ERC text (`ERCS/erc-8444.md`), reference kernel and four kind adapters (Solidity, Foundry, 43 tests against the real vendored companion contracts), cross-language vectors (ethers v6 + RFC 8785 ↔ solc), a Node.js resolver/gateway that passes the official ARD conformance CLI, and the **Sepolia reference deployment** (2026-10-15, kernel [`0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A`](https://sepolia.etherscan.io/address/0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A)) with one record per kind, documented in `docs/sepolia-evidence.md`.
+**Status:** **ERC-8444, Draft** — merged into ethereum/ERCs on 2026-10-15 via [PR #2073](https://github.com/ethereum/ERCs/pull/2073) ([eips.ethereum.org/ERCS/erc-8444](https://eips.ethereum.org/ERCS/erc-8444); discussion: [Ethereum Magicians 29963](https://ethereum-magicians.org/t/erc-8444-agentic-resource-discovery-ard-onchain/29963)). Contents: the ERC text (`ERCS/erc-8444.md`), reference kernel and four kind adapters (Solidity, Foundry, 43 tests against the real vendored companion contracts), cross-language vectors (ethers v6 + RFC 8785 ↔ solc), a Node.js resolver/gateway that passes the official ARD conformance CLI, and the **Sepolia reference deployment** (2026-10-15, kernel [`0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A`](https://sepolia.etherscan.io/address/0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A)) with one record per kind, documented in `docs/sepolia-evidence.md`.
 
 ## What it is
 
@@ -18,12 +18,13 @@ Companion drafts anchored in v1: token-bound executable skills (ERC-8338), token
 ## Repository
 
 ```
-ERCS/erc-8444.md                     the ERC text (self-contained; as filed in ethereum/ERCs#2073)
+ERCS/erc-8444.md                     the ERC text (self-contained; identical to ethereum/ERCs master as merged from PR #2073)
 docs/design-memo.md                  design memo v0.2 — principles, object model, decisions log, upstream proposals
 docs/test-record.md                  toolchain, sizes, full test list, gateway e2e steps, conformance results, limitations
 docs/magicians-post.md               the Ethereum Magicians thread opener
 docs/sepolia-runbook.md              how the Sepolia evidence set is produced (Foundry script or offline signing)
 docs/sepolia-evidence.md             the Sepolia deployment: addresses, anchors, records, resolved state, transactions
+docs/gateway-sepolia-last-run.json   the gateway's served entries and conformance results against the Sepolia kernel
 deployments/                         sepolia.json, sepolia-cases.json, sepolia-descriptors.json, the finchip.ai acknowledgment
 assets/erc-8444/contracts/           ARDOnchainRegistry (kernel), interfaces/, adapters/ (Skill, Task, Agent, Registry), libraries/
 assets/erc-8444/schemas/             value-context.jsonld, ai-task.schema.json
@@ -72,7 +73,7 @@ See `tools/gateway/README.md`. The gateway serves `POST /search`, `POST /explore
 | `AIDRegistry` (reference) | `0x36E4a7BDe8a9D7d445042495180b64C7AF77Fd7E` |
 | `SkillToken` (reference fixture) | `0x82F20280D49F1DDC67e1840339dBbc534FEC8F97` |
 
-Anchored to the live token-bound tender kernel `0xA62059A498E40C4Ae4aF926E2B00C1Ff122bDdb7` and the official ERC-8004 Identity Registry `0x8004A818BFB912233c491871b3d84c89A494BD9e`. One record per kind, a domain claim, a skill transfer and a tender cancellation are on chain; the gateway serves the records and passes the conformance CLI against them. Details, transaction list and the resolved state: `docs/sepolia-evidence.md`.
+Anchored to the live token-bound tender kernel `0xA62059A498E40C4Ae4aF926E2B00C1Ff122bDdb7` and the official ERC-8004 Identity Registry `0x8004A818BFB912233c491871b3d84c89A494BD9e`. All seven contracts are verified on Sourcify (exact match). One record per kind, domain claims by two controllers, a skill transfer followed by a descriptor update signed by the new holder, and a tender cancellation are on chain; the gateway serves the records and passes the conformance CLI against them. Details, transaction list and the resolved state: `docs/sepolia-evidence.md`.
 
 ## Filing
 
@@ -80,7 +81,7 @@ Anchored to the live token-bound tender kernel `0xA62059A498E40C4Ae4aF926E2B00C1
 python3 scripts/make-filing-package.py            # -> ercs-pr-package/ERCS/erc-8444.md + ercs-pr-package/assets/erc-8444/
 ```
 
-The package mirrors the ethereum/ERCs layout for PR #2073 (branch `add-erc-ard-onchain`). The script rejects literal references to unmerged drafts, external URLs other than rfc-editor.org, directory-style asset links, Chinese characters, missing first-mention links, proposal references inside backticks and RFC 2119 keywords inside Security Considerations.
+The package mirrors the ethereum/ERCs layout; PR #2073 was built from it and merged. Later changes to the ERC go through new pull requests built the same way. The script rejects literal references to unmerged drafts, external URLs other than rfc-editor.org, directory-style asset links, Chinese characters, missing first-mention links, proposal references inside backticks and RFC 2119 keywords inside Security Considerations.
 
 ## Upstream
 

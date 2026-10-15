@@ -1,6 +1,6 @@
 # Sepolia evidence — ARD Onchain reference deployment
 
-Deployed 2026-10-15 on Sepolia (chain 11155111) from `0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25`. This document records what is on chain, what the gateway served from it, and how to check both. Machine-readable copies: `deployments/sepolia.json` (addresses, anchors, records, claims) and `deployments/sepolia-cases.json` (every transaction with block and gas).
+Deployed 2026-10-15 on Sepolia (chain 11155111) from `0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25`. This document records what is on chain, what the gateway served from it, and how to check both. Machine-readable copies: `deployments/sepolia.json` (addresses, anchors, records, claims, verification), `deployments/sepolia-cases.json` (every transaction with block and gas) and `docs/gateway-sepolia-last-run.json` (the served entries and the conformance results). State below was read at block 11919047.
 
 ## Contracts
 
@@ -16,7 +16,7 @@ Deployed 2026-10-15 on Sepolia (chain 11155111) from `0xCcFDEE360c9CDc79005e4ddA
 
 Live contracts used as anchors, not deployed by this run: the token-bound task tender kernel `TaskToken` [`0xA62059A498E40C4Ae4aF926E2B00C1Ff122bDdb7`](https://sepolia.etherscan.io/address/0xA62059A498E40C4Ae4aF926E2B00C1Ff122bDdb7) and the official ERC-8004 Identity Registry [`0x8004A818BFB912233c491871b3d84c89A494BD9e`](https://sepolia.etherscan.io/address/0x8004A818BFB912233c491871b3d84c89A494BD9e).
 
-Compiler: solc 0.8.24, optimizer 200 runs, EVM cancun; the standard-JSON inputs that reproduce the deployed creation bytecode byte for byte (metadata hash included) are kept with the deliverables of the run and submitted to the explorers (see "Source verification" below).
+Source verification: all seven contracts are verified on Sourcify as **exact matches** (creation and runtime bytecode, metadata hash included; `https://repo.sourcify.dev/11155111/<address>`), from solc 0.8.24+commit.e11b9ed9, optimizer 200 runs, EVM cancun. The same standard-JSON inputs reproduce the signed deployment transactions byte for byte; Etherscan verification is submitted from them with an API key.
 
 ## Kinds
 
@@ -31,35 +31,40 @@ Compiler: solc 0.8.24, optimizer 200 runs, EVM cancun; the standard-JSON inputs 
 
 One record per kind, all registered by the deployer (the controller of every anchor at registration time):
 
-| kind | anchor (CAIP) | record id | canonical URN claimed |
-|---|---|---|---|
-| `skill` | `eip155:11155111/erc721:0x82f20280d49f1ddc67e1840339dbbc534fec8f97/1` | `0x4683d8e06dbef3a5e684813f14d46eeab4f8d6d1d6382bf02b70cb5469d0c4b8` | `urn:air:finchip.ai:skills:daily-finance-brief` |
-| `task` | `eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/17` | `0xd9f727824f1c84ed9b5315a1f3c0f31802402702d0e8a1d7b5b954133e309000` | `urn:air:finchip.ai:tenders:oracle-basis-feed` |
-| `agent` | `eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25` | `0xb2e9339ea195ca1d497e808392a6946e8fdd297149d6aed5a092c8d20e476489` | `urn:air:finchip.ai:agents:finch-analyst` |
-| `registry` | `eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25#fa187c88…27dd6a` | `0x2abc385a21e2dc7727d162bcfca7488dd794d6b0e199a4a7f45a87b23843418c` | `urn:air:registry.finchip.ai:registry:sepolia` |
+| kind | anchor (CAIP) | record id | canonical URN claimed | descriptor hash (current) |
+|---|---|---|---|---|
+| `skill` | `eip155:11155111/erc721:0x82f20280d49f1ddc67e1840339dbbc534fec8f97/1` | `0x4683d8e0…c4b8` | `urn:air:finchip.ai:skills:daily-finance-brief` | `0x42f1025b…9551` |
+| `task` | `eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/17` | `0xd9f72782…9000` | `urn:air:finchip.ai:tenders:oracle-basis-feed` | `0x2ddc8d8e…9d83` |
+| `agent` | `eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25` | `0xb2e9339e…6489` | `urn:air:finchip.ai:agents:finch-analyst` | `0x5a081d12…b4a3` |
+| `registry` | `eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25#fa187c88…27dd6a` | `0x2abc385a…418c` | `urn:air:registry.finchip.ai:registry:sepolia` | `0x1c771e2b…2efa` |
+
+Full record ids and hashes are in `deployments/sepolia.json`; the descriptors themselves are authored by `tools/make-sepolia-descriptors.js` and kept in `deployments/sepolia-descriptors.json`.
 
 - The skill is token #1 of the reference skill token (`skillMd` = SHA-256 of `# ARD Onchain evidence skill`, package digest `0x2473da0a…3144d`), minted to the deployer and later transferred to a second holder `0x81EcAc174eba407efEb6698927d16dC6494CA60C`.
 - The task is tender #17 of the live tender kernel: native asset, 0.0005 ETH per completion, two completions, judged by the publisher, settle-by 60 days, 7-day judgment window; 0.001 ETH escrowed in the tender's vault; later cancelled by its update authority.
 - The agent is the deployer address itself, bound through the reference AID registry to agentId 10855 on the official ERC-8004 Identity Registry (state `ACTIVE`).
 - The registry anchor is the deployer address with the discriminator `keccak256("https://registry.finchip.ai/api/v1/")`.
-- The deployer claimed `finchip.ai` on chain (`claimDomain`). The domain's acknowledgment file is `deployments/acknowledgment-finchip.ai.well-known-ard.json`, to be served as `https://finchip.ai/.well-known/ard.json`.
+- Domain claims on chain: `finchip.ai` by the deployer and, after the transfer, by the second holder; `registry.finchip.ai` by the deployer.
+- The descriptors were replaced once (`updateDescriptor`, four `DescriptorUpdated` events): the first versions carried the pre-numbering context IRI, the current ones carry `https://eips.ethereum.org/assets/eip-8444/ns#`, native-asset terms and the real anchors. The skill's replacement was signed by the second holder, because after the transfer only the live controller can mutate the record.
 
 Descriptors are published as `data:application/json;base64` URIs, so every record is self-contained; the committed hash is SHA-256 over the RFC 8785 canonical form of the content members (`@context`, `@id`, `identifier`, `trustManifest` excluded).
 
-## Resolved state served by the gateway (block 11918615)
+## Resolved state served by the gateway (block 11919047)
 
-`tools/gateway/server.js` indexed the kernel and served the four records as ARD entries; the vendored ARD conformance CLI passed in both modes (manifest with JSON Schema: `PASS`, 0 errors, 0 warnings, 2 informational; registry: `PASS`, 0 errors, 0 warnings).
+`tools/gateway/server.js` indexed the kernel and served the four records as ARD entries; the vendored ARD conformance CLI passed in both modes (manifest with JSON Schema: `PASS`, 0 errors, 0 warnings, 2 informational; registry: `PASS`, 0 errors, 0 warnings). The served manifest and the probe results are in `docs/gateway-sepolia-last-run.json`.
+
+Before the publisher domains serve their acknowledgments (the state at the time of writing):
 
 | kind | identifier served | `value:binding` | `value:level` | `value:status` | why |
 |---|---|---|---|---|---|
-| `skill` | alias `urn:air:registry.finchip.ai:onchain:eip155-11155111-erc721-0x82f2…8f97-1` | `third-party` | 2 | Active | the token moved to the second holder, who has not claimed `finchip.ai`; the canonical URN is reported in `value:stale`; the skill is still backed and its package digest equals the anchor hint |
-| `task` | alias `…-0xa620…ddb7-17` | `claimed` | 1 | Active | the deployer claimed `finchip.ai` but the domain has not acknowledged it yet; the tender is cancelled, so the record is no longer backed |
-| `agent` | alias `…-0xccfd…7a25` | `claimed` | 2 | Active | claimed, not yet acknowledged; the identity is `ACTIVE` in the AID registry |
-| `registry` | alias `…-0xccfd…7a25-fa18…dd6a` | `third-party` | 1 | Active | the URN publisher is `registry.finchip.ai`, which nobody has claimed on chain; registry endpoints are capped at level 1 |
+| `skill` | alias `urn:air:registry.finchip.ai:onchain:eip155-11155111-erc721-0x82f2…8f97-1` | `contested` | 2 | Active | two addresses claim `finchip.ai` (deployer and second holder) and the domain has acknowledged neither; the canonical URN is reported in `value:stale`; the token is still backed and its package digest equals the anchor hint |
+| `task` | alias `…-0xa620…ddb7-17` | `contested` | 1 | Active | same two claimants; the tender is cancelled, so the record is no longer backed |
+| `agent` | alias `…-0xccfd…7a25` | `contested` | 2 | Active | same two claimants; the identity is `ACTIVE` in the AID registry |
+| `registry` | alias `…-0xccfd…7a25-fa18…dd6a` | `claimed` | 1 | Active | the deployer alone claims `registry.finchip.ai`, not yet acknowledged; registry endpoints are capped at level 1 |
 
-Once `https://finchip.ai/.well-known/ard.json` serves the acknowledgment file, the task and agent records resolve as `verified` under their canonical URNs; the skill follows when the second holder claims `finchip.ai` (listed in the same file). The gateway at `registry.finchip.ai`, run with `--operator 0xCcFD…7A25 --registry-name sepolia`, acknowledges the registry record itself.
+Once `https://finchip.ai/.well-known/ard.json` serves `deployments/acknowledgment-finchip.ai.well-known-ard.json` (both controllers listed, the three entries included) and the gateway at `registry.finchip.ai` serves its own manifest (`--operator 0xCcFD…7A25 --registry-name sepolia`), the same run resolves every record as `verified` under its canonical URN — skill L2, task L1, agent L2, registry L1 — which is what the `projectedWithAcknowledgments` block of `docs/gateway-sepolia-last-run.json` shows (produced with `--manifest-override`).
 
-The sandbox that produced this run has no outbound RPC access, so the gateway was run against a pinned-block JSON-RPC replay of Sepolia (block 11918615, every `eth_getLogs` / `eth_call` answered from responses recorded through a browser relay); the gateway code is unchanged and anyone can repeat the run live:
+The sandbox that produced this run has no outbound RPC access, so the gateway was run against a pinned-block JSON-RPC replay of Sepolia (every `eth_getLogs` / `eth_call` answered from responses recorded through a browser relay); the gateway code is unchanged and anyone can repeat the run live:
 
 ```bash
 node tools/gateway/server.js --rpc https://ethereum-sepolia-rpc.publicnode.com \
@@ -72,7 +77,7 @@ python3 tools/conformance/conformance-test registry http://127.0.0.1:9010/api/v1
 
 ## Transactions
 
-All transactions were signed offline and broadcast through a public Sepolia endpoint; the first attempt at the deployments (nonces 0–5, not listed) ran out of gas because Sepolia's current gas schedule charges several times more per deployed byte and per storage write than anvil's default schedule — every limit below comes from a live `eth_estimateGas`.
+Thirty transactions, all successful, signed offline and broadcast through a public Sepolia endpoint. The first attempt at the deployments (nonces 0–5, not listed) ran out of gas because Sepolia's current gas schedule charges several times more per deployed byte and per storage write than anvil's default schedule — every limit below comes from a live `eth_estimateGas`. (Sepolia is already on the next protocol upgrade: receipts of plain ETH transfers carry a transfer log from the system address, and contract creation and storage are repriced.)
 
 <!-- tx-table:start -->
 | # | phase | transaction | block | gas used | effect |
@@ -100,17 +105,20 @@ All transactions were signed offline and broadcast through a public Sepolia endp
 | 32 | records | `claimDomain(finchip.ai)` [0xcfad05bc…5d70](https://sepolia.etherscan.io/tx/0xcfad05bcba88e37ea33e241b8eae20f3e1a2f4ba363f5f9e839ab22bbd5b5d70) | 11918594 | 354,175 | domain claimed by the deployer |
 | 33 | cases | `SkillToken.transferFrom(deployer -> 0x81EcAc174eba407efEb6698927d16dC6494CA60C, #1)` [0x70d82856…f105](https://sepolia.etherscan.io/tx/0x70d8285666ec71a5794038d25bddf0d5abab5445710ba48c6395e0ce1657f105) | 11918600 | 144,712 | skill #1 transferred to 0x81EcAc174eba407efEb6698927d16dC6494CA60C: controller follows the token |
 | 34 | cases | `TaskToken.cancelTask(#17)` [0xdbc67773…7a46](https://sepolia.etherscan.io/tx/0xdbc677735d5792d384d08ae8b1faac2c9df92a8968427d4b61b31d93535a7a46) | 11918600 | 131,983 | tender #17 cancelled: no longer backed |
+| 35 | descriptors | `updateDescriptor task` [0x4eccc28c…77be](https://sepolia.etherscan.io/tx/0x4eccc28cef7343264066c89505d676c814ff4c61d38acb5c9733434fb91a77be) | 11918970 | 885,477 | descriptor replaced by the controller (DescriptorUpdated event) |
+| 36 | descriptors | `updateDescriptor agent` [0x4a3cb0ea…4a64](https://sepolia.etherscan.io/tx/0x4a3cb0eac2e7fa73666d84d79e16b99fb044b56e6d5f4c87313efdb1e8714a64) | 11918970 | 595,665 | descriptor replaced by the controller (DescriptorUpdated event) |
+| 37 | descriptors | `updateDescriptor registry` [0x43470888…72b1](https://sepolia.etherscan.io/tx/0x4347088878fa5fdedb0604419494ea7379c6682030dcfb56250cc4ffb8c872b1) | 11918970 | 996,470 | descriptor replaced by the controller (DescriptorUpdated event) |
+| 38 | descriptors | `claimDomain(registry.finchip.ai)` [0x5d0e65e5…d1fa](https://sepolia.etherscan.io/tx/0x5d0e65e52b34a81bf483042117edf9ebf596e3597ae52ac930529d588bcdd1fa) | 11918970 | 357,646 | gateway domain claimed by the deployer |
+| 39 | descriptors | `fund holder2 0.002 ETH` [0x5687e224…6604](https://sepolia.etherscan.io/tx/0x5687e2241c9dea83be86235ccb40faaae65e9e9f3524e43a1f02616a1aeb6604) | 11918970 | 204,600 | second holder funded for its own transaction |
+| 0 (second holder) | descriptors | `updateDescriptor skill (by holder2)` [0x6ae2586f…d222](https://sepolia.etherscan.io/tx/0x6ae2586fb12534e1cb6bade42ab1a64386f0566ce6f99bbb0b1298fcc157d222) | 11919033 | 727,484 | skill descriptor replaced by the new holder (only the live controller can) |
+| 1 (second holder) | descriptors | `claimDomain(finchip.ai) (by holder2)` [0xadf8685b…b10d](https://sepolia.etherscan.io/tx/0xadf8685b2006ac46441fe5bfd917270b4be677a9526fd6be61c3d7d5f9d4b10d) | 11919033 | 256,255 | publisher domain claimed by the new holder as well (two claimants until the domain acknowledges) |
 <!-- tx-table:end -->
 
-Total fees for the listed transactions: about 0.00009 ETH (base fee 17 wei, priority fee 0.001 gwei) plus the 0.001 ETH escrow.
-
-## Source verification
-
-The seven contracts' standard-JSON inputs were recompiled with solc 0.8.24+commit.e11b9ed9 and compared with the signed deployment transactions: the creation bytecode matches byte for byte, metadata hash included. Submission to Sourcify and Etherscan is recorded in `deployments/sepolia.json` under `verification` once accepted.
+Total fees: about 0.0001 ETH (base fee 17 wei, priority fee 0.001 gwei) plus the 0.001 ETH escrow and the 0.002 ETH given to the second holder.
 
 ## What the run shows
 
 1. Four kinds anchored to real contracts: a token-bound executable skill, a live token-bound tender with visible escrow, an address bound to the official identity registry, and a gateway endpoint.
 2. The gateway serves them as ordinary ARD entries and passes the official conformance CLI; every entry carries `value:anchor` and `value:descriptorHash`, so any client can re-derive the record from the chain.
-3. Controllers are derived live: after the transfer, `controllerOf(skill)` is the second holder, the claimed URN is reported stale and the record is served under the gateway alias; after the cancellation, the task record drops to level 1 while staying Active and discoverable.
-4. Binding states move with evidence, not with registration: `claimed` until the domain acknowledges, `third-party` where the controller never claimed the publisher domain, `verified` only when both sides agree.
+3. Controllers are derived live: after the transfer, `controllerOf(skill)` is the second holder, who alone could replace the skill descriptor; the claimed URN is reported stale and the record is served under the gateway alias. After the cancellation, the task record drops to level 1 while staying Active and discoverable.
+4. Binding states move with evidence, not with registration: `claimed` with one claimant, `contested` with two, `third-party` where the controller never claimed the publisher domain, `verified` only once the domain acknowledges — and the acknowledgment file is the only step that remains on the publisher's side.

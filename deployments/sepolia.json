@@ -1,7 +1,7 @@
 {
   "chainId": 11155111,
   "network": "sepolia",
-  "snapshotBlock": 11918615,
+  "snapshotBlock": 11919047,
   "deployer": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
   "secondHolder": "0x81EcAc174eba407efEb6698927d16dC6494CA60C",
   "contracts": {
@@ -77,16 +77,16 @@
       "anchor": "eip155:11155111/erc721:0x82f20280d49f1ddc67e1840339dbbc534fec8f97/1",
       "target": "0x82F20280D49F1DDC67e1840339dBbc534FEC8F97",
       "id": "1",
-      "descriptorHash": "0x5a3a17d36146826c133aeb0d95e596f3743eb53ba7a2ead2652b86fdd9b74b08",
-      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F… (2049 chars, data: URI)",
+      "descriptorHash": "0x42f1025b57d655cccfa3f5ee3853b81047d0415d89c9b8b25d7eea6702789551",
+      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F\u2026 (1901 chars, data: URI)",
       "urn": "urn:air:finchip.ai:skills:daily-finance-brief",
       "status": "Active",
       "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
-      "updatedAt": 1792045092,
+      "updatedAt": 1792050420,
       "controller": "0x81EcAc174eba407efEb6698927d16dC6494CA60C",
       "backed": true,
       "anchorHint": "0x2473da0a68d9f615c2167ec67af862665543c049bb254bbe3100a777a1c3144d",
-      "descriptorMatchesAuthored": false
+      "descriptorMatchesAuthored": true
     },
     "task": {
       "recordId": "0xd9f727824f1c84ed9b5315a1f3c0f31802402702d0e8a1d7b5b954133e309000",
@@ -94,16 +94,16 @@
       "anchor": "eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/17",
       "target": "0xA62059A498E40C4Ae4aF926E2B00C1Ff122bDdb7",
       "id": "17",
-      "descriptorHash": "0x4b31aa6a12e189798aa0a0a75143723bf40ec9daefc538d6e51d93f29caf16c2",
-      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F… (2393 chars, data: URI)",
+      "descriptorHash": "0x2ddc8d8e31338f73da332675b30758c0ada638b745316808459be06030209d83",
+      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F\u2026 (2193 chars, data: URI)",
       "urn": "urn:air:finchip.ai:tenders:oracle-basis-feed",
       "status": "Active",
       "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
-      "updatedAt": 1792045092,
+      "updatedAt": 1792049652,
       "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
       "backed": false,
       "anchorHint": "0x69896dd46399e6362a246b981932e09569e79bac3ec3b3056d99b12295efa73b",
-      "descriptorMatchesAuthored": false
+      "descriptorMatchesAuthored": true
     },
     "agent": {
       "recordId": "0xb2e9339ea195ca1d497e808392a6946e8fdd297149d6aed5a092c8d20e476489",
@@ -111,16 +111,16 @@
       "anchor": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
       "target": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
       "id": "0",
-      "descriptorHash": "0x8ddaadbe15c35d357f7305553036b632babaaeb93118915ae8faa7f6bd0e787c",
-      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F… (1665 chars, data: URI)",
+      "descriptorHash": "0x5a081d12a48970b134096ce11271b8af4b7f656caa1a59b094c5fab59e48b4a3",
+      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F\u2026 (1541 chars, data: URI)",
       "urn": "urn:air:finchip.ai:agents:finch-analyst",
       "status": "Active",
       "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
-      "updatedAt": 1792045092,
+      "updatedAt": 1792049652,
       "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
       "backed": true,
       "anchorHint": "0x0000000000000000000000000000000000000000000000000000000000000000",
-      "descriptorMatchesAuthored": false
+      "descriptorMatchesAuthored": true
     },
     "registry": {
       "recordId": "0x2abc385a21e2dc7727d162bcfca7488dd794d6b0e199a4a7f45a87b23843418c",
@@ -128,23 +128,26 @@
       "anchor": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25#fa187c889e870315fda7522dc8e0bfded5d31e855837bab516a2e5f99f27dd6a",
       "target": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
       "id": "113121475975165909900932156712680151072694951570286427139054365066607513296234",
-      "descriptorHash": "0x02b052d039255fadbf017641101bbc1ac7a7da4ca0a390ba7db6bcd8d87179f6",
-      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F… (1097 chars, data: URI)",
+      "descriptorHash": "0x1c771e2b2cbf98d3894bc871a7d832f67ddece7af2d48d51a64f9474dde12efa",
+      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F\u2026 (1249 chars, data: URI)",
       "urn": "urn:air:registry.finchip.ai:registry:sepolia",
       "status": "Active",
       "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
-      "updatedAt": 1792045092,
+      "updatedAt": 1792049652,
       "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
       "backed": false,
       "anchorHint": "0x0000000000000000000000000000000000000000000000000000000000000000",
-      "descriptorMatchesAuthored": false
+      "descriptorMatchesAuthored": true
     }
   },
   "domainClaims": {
     "finchip.ai": [
-      "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25"
+      "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "0x81EcAc174eba407efEb6698927d16dC6494CA60C"
     ],
-    "registry.finchip.ai": []
+    "registry.finchip.ai": [
+      "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25"
+    ]
   },
   "descriptors": {
     "skill": {
@@ -163,5 +166,14 @@
       "identifier": "urn:air:registry.finchip.ai:registry:sepolia",
       "descriptorHash": "0x1c771e2b2cbf98d3894bc871a7d832f67ddece7af2d48d51a64f9474dde12efa"
     }
+  },
+  "verification": {
+    "sourcify": {
+      "date": "2026-10-15",
+      "result": "exact_match (creation and runtime) for all seven contracts",
+      "api": "https://sourcify.dev/server/v2/verify/11155111/<address>",
+      "explorer": "https://repo.sourcify.dev/11155111/<address>"
+    },
+    "etherscan": "pending (API key); standard-JSON inputs reproduce the deployed creation bytecode byte for byte"
   }
 }

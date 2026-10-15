@@ -1,6 +1,6 @@
 # ARD Onchain — design memo v0.2
 
-Status: design round 3 (2026-10-13); filed as ethereum/ERCs#2073 and assigned ERC-8444 on 2026-10-15, deployed on Sepolia the same day (`docs/sepolia-evidence.md`). Companion to `ERCS/erc-8444.md`; the ERC text is normative, this memo records the reasoning and the decisions log.
+Status: design round 3 (2026-10-13); filed as ethereum/ERCs#2073, assigned ERC-8444 and merged as a Draft on 2026-10-15, deployed on Sepolia the same day (`docs/sepolia-evidence.md`). Companion to `ERCS/erc-8444.md`; the ERC text is normative, this memo records the reasoning and the decisions log.
 
 ## 1. One sentence
 

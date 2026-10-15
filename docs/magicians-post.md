@@ -3,7 +3,7 @@
 *(Posted on Ethereum Magicians on 2026-10-13 as topic 29963; after the number was assigned the thread was retitled `ERC-8444: Agentic Resource Discovery (ARD) Onchain` and now lives at https://ethereum-magicians.org/t/erc-8444-agentic-resource-discovery-ard-onchain/29963 . `discussions-to` in `ERCS/erc-8444.md` points there; the filing package is built with `scripts/make-filing-package.py`.)*
 
 **Repository:** https://github.com/garyyang-finchip/ard-onchain-framework
-**PR:** https://github.com/ethereum/ERCs/pull/2073 (assigned ERC-8444)
+**PR:** https://github.com/ethereum/ERCs/pull/2073 (assigned ERC-8444; merged 2026-10-15, status Draft)
 
 ## What this is
 
@@ -34,4 +34,4 @@ Sepolia deployment and the upstream proposals follow once the thread exists.
 
 ---
 
-**Update (2026-10-15):** filed as ethereum/ERCs#2073 and assigned ERC-8444; thread title updated to match. The reference deployment is on Sepolia — kernel `0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A`, one record per kind anchored to a token-bound skill, the live token-bound tender kernel (`0xA620…dDb7`, tender #17 with escrow), an address bound to the official ERC-8004 Identity Registry (agentId 10855) and a gateway endpoint, plus a domain claim, a skill transfer and a tender cancellation; the gateway serves the records as ARD entries and the official conformance CLI passes against them. Addresses, transactions and the resolved state: `docs/sepolia-evidence.md` in the repository.
+**Update (2026-10-15):** filed as ethereum/ERCs#2073, assigned ERC-8444 and merged the same day as a Draft (https://eips.ethereum.org/ERCS/erc-8444); thread title updated to match. The reference deployment is on Sepolia — kernel `0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A`, one record per kind anchored to a token-bound skill, the live token-bound tender kernel (`0xA620…dDb7`, tender #17 with escrow), an address bound to the official ERC-8004 Identity Registry (agentId 10855) and a gateway endpoint, plus domain claims, a skill transfer (the new holder then replaced the descriptor — only the live controller can) and a tender cancellation; all seven contracts are verified on Sourcify; the gateway serves the records as ARD entries and the official conformance CLI passes against them. Addresses, transactions and the resolved state: `docs/sepolia-evidence.md` in the repository.
