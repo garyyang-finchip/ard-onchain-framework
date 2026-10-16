@@ -29,7 +29,7 @@ contract ARDRecordsTest is ARDBase {
         assertEq(rec.descriptorURI, "ipfs://desc-skill");
         assertEq(rec.urn, "urn:air:alice.example:skills:one");
         assertEq(uint8(rec.status), uint8(IARDOnchainRegistry.Status.Active));
-        assertEq(rec.registrant, alice);
+        assertEq(rec.attestor, alice);
         assertEq(rec.updatedAt, uint64(block.timestamp));
     }
 
@@ -184,13 +184,42 @@ contract ARDRecordsTest is ARDBase {
         skills.transferFrom(alice, mallory, skillId);
         assertEq(reg.controllerOf(id), mallory);
 
-        // the former owner has lost authority; the new owner has it, with the registrant unchanged
+        // the former owner has lost authority; the new owner has it
         vm.prank(alice);
         vm.expectRevert(IARDOnchainRegistry.NotController.selector);
         reg.updateDescriptor(id, keccak256("v2"), "", "");
         vm.prank(mallory);
         reg.updateDescriptor(id, keccak256("v2"), "", "urn:air:mallory.example:skills:bought");
-        assertEq(reg.recordOf(id).registrant, alice);
+        assertEq(reg.recordOf(id).attestor, mallory);
+    }
+
+    function test_transfer_leaves_the_descriptor_unadopted_until_the_new_controller_commits() public {
+        bytes32 id = _registerSkill();
+        assertEq(reg.recordOf(id).attestor, alice);
+
+        // after the transfer the served descriptor was committed by a former controller: unadopted
+        vm.prank(alice);
+        skills.transferFrom(alice, mallory, skillId);
+        assertEq(reg.controllerOf(id), mallory);
+        assertEq(reg.recordOf(id).attestor, alice);
+        assertTrue(reg.recordOf(id).attestor != reg.controllerOf(id));
+
+        // the new controller adopts by committing a descriptor again; the same hash is enough
+        vm.prank(mallory);
+        reg.updateDescriptor(id, DESC, "ipfs://desc-skill", "urn:air:alice.example:skills:one");
+        assertEq(reg.recordOf(id).attestor, mallory);
+        assertEq(reg.recordOf(id).attestor, reg.controllerOf(id));
+        assertEq(reg.recordOf(id).descriptorHash, DESC);
+
+        // a status change is not an adoption: suspending and reactivating leaves the attestor alone
+        vm.prank(mallory);
+        skills.transferFrom(mallory, carol, skillId);
+        vm.prank(carol);
+        reg.setStatus(id, IARDOnchainRegistry.Status.Suspended);
+        vm.prank(carol);
+        reg.setStatus(id, IARDOnchainRegistry.Status.Active);
+        assertEq(reg.recordOf(id).attestor, mallory);
+        assertTrue(reg.recordOf(id).attestor != reg.controllerOf(id));
     }
 
     function test_burned_anchor_reports_zero_controller_and_blocks_mutation() public {

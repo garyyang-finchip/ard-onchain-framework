@@ -4,12 +4,12 @@
 const { ethers } = require('ethers');
 
 const REGISTRY_ABI = [
-  'event Registered(bytes32 indexed recordId, bytes32 indexed kind, address indexed target, uint256 id, address registrant, bytes32 descriptorHash, string descriptorURI, string urn)',
+  'event Registered(bytes32 indexed recordId, bytes32 indexed kind, address indexed target, uint256 id, address attestor, bytes32 descriptorHash, string descriptorURI, string urn)',
   'event DescriptorUpdated(bytes32 indexed recordId, bytes32 descriptorHash, string descriptorURI, string urn)',
   'event StatusChanged(bytes32 indexed recordId, uint8 status)',
   'event DomainClaimed(bytes32 indexed domainHash, address indexed controller, string domain)',
   'event DomainReleased(bytes32 indexed domainHash, address indexed controller)',
-  'function recordOf(bytes32) view returns (tuple(bytes32 kind, address target, uint256 id, bytes32 descriptorHash, string descriptorURI, string urn, uint8 status, address registrant, uint64 updatedAt))',
+  'function recordOf(bytes32) view returns (tuple(bytes32 kind, address target, uint256 id, bytes32 descriptorHash, string descriptorURI, string urn, uint8 status, address attestor, uint64 updatedAt))',
   'function controllerOf(bytes32) view returns (address)',
   'function backed(bytes32) view returns (bool)',
   'function anchorHintOf(bytes32) view returns (bytes32)',
@@ -25,7 +25,7 @@ class Indexer {
     this.lastBlock = fromBlock - 1;
   }
 
-  /** Pull new events, then refresh every record's live views (controller, backed, hint, status). */
+  /** Pull new events, then refresh every record's live views (controller, backed, hint, status, attestor). */
   async sync() {
     const latest = await this.provider.getBlockNumber();
     if (latest > this.lastBlock) {
@@ -43,7 +43,7 @@ class Indexer {
       rec.descriptorURI = r.descriptorURI;
       rec.urn = r.urn;
       rec.status = Number(r.status);
-      rec.registrant = r.registrant;
+      rec.attestor = r.attestor;
       rec.updatedAt = Number(r.updatedAt);
       rec.controller = await this.registry.controllerOf(rec.recordId);
       rec.backed = await this.registry.backed(rec.recordId);

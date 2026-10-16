@@ -1,6 +1,6 @@
 # Sepolia evidence runbook
 
-The evidence set of `docs/design-memo.md` §6 — one record per kind, a domain claim, a skill transfer that makes a canonical URN stale, a tender closing — was produced on 2026-10-15; the result is in `docs/sepolia-evidence.md` and `deployments/`. This page records how to produce it, either with the Foundry script (the reference path, rehearsed on anvil) or by signing offline when the build environment has no RPC access (the path actually used).
+The evidence set of `docs/design-memo.md` §6 — one record per kind, a domain claim, a skill transfer that makes a canonical URN stale and leaves the record unadopted, the adoption by the new controller, a tender closing — was produced on 2026-10-15 (first kernel) and 2026-10-16 (kernel v1.1 with the adoption demonstration); the result is in `docs/sepolia-evidence.md` and `deployments/`. This page records how to produce it, either with the Foundry script (the reference path, rehearsed on anvil) or by signing offline when the build environment has no RPC access (the path actually used).
 
 ## Inputs
 
@@ -39,14 +39,19 @@ node tools/make-sepolia-descriptors.js --chain-id 11155111 --skill-pkg $SKILL_PK
 PUBLISHER_DOMAIN=finchip.ai forge script script/SepoliaEvidence.s.sol:SepoliaEvidence --sig "records()" --rpc-url $RPC --private-key $PK --broadcast
 # publish the acknowledgment (below), then
 SECOND_HOLDER=0x<other> forge script script/SepoliaEvidence.s.sol:SepoliaEvidence --sig "transfer()" --rpc-url $RPC --private-key $PK --broadcast
+forge script script/SepoliaEvidence.s.sol:SepoliaEvidence --sig "adopt()" --rpc-url $RPC --private-key 0x<second holder key> --broadcast
 forge script script/SepoliaEvidence.s.sol:SepoliaEvidence --sig "close()" --rpc-url $RPC --private-key $PK --broadcast
 ```
+
+`adopt()` is broadcast by the account that holds the skill after `transfer()`: it re-commits the descriptor the record already carries (same hash), which makes that account the attestor. Between `transfer()` and `adopt()` the gateway withholds the skill record from search and listing and reports it as unadopted at `GET /records/<id>`.
 
 `forge script` estimates gas against the target RPC, so the schedule note above is handled; `deployments/sepolia.json` accumulates the state between phases.
 
 ## Phases (offline signing)
 
 The 2026-10-15 run was signed in an environment that could not reach any RPC: each phase was planned as a list of transactions (predicted `CREATE` addresses from the deployer's nonce, calldata from the Foundry artifacts), estimated with `eth_estimateGas` through a relay, signed with ethers v6 (EIP-1559, chain 11155111) and broadcast with `eth_sendRawTransaction`, the returned hash checked against the hash of the signed bytes. Phases were sequenced so that every call was estimated against the state the previous phase had created: deployments → kinds and the skill mint → the AID binding and the tender mint → escrow, the four `register` calls and `claimDomain` → the transfer and the cancellation → the descriptor replacements (three by the deployer, the skill's by the second holder from its own funded account) and the remaining domain claims. Receipts, addresses and the resolved record views were then read at one pinned block and written to `deployments/sepolia.json` and `deployments/sepolia-cases.json`.
+
+The 2026-10-16 run (kernel v1.1) used the same relay: kernel deployment → the four `registerKind` calls against the existing adapters and a new tender mint → escrow, three `register` calls and two `claimDomain` calls by the deployer plus the skill's `register` by the address holding skill #1 → the transfer of the skill to the deployer (read at one pinned block: the unadopted state) → the deployer's `updateDescriptor` with the unchanged hash (read at a second pinned block: the adopted state). The gateway was run against both snapshots.
 
 ## Acknowledgment
 
@@ -66,4 +71,4 @@ The registry record's publisher domain is the gateway's own host; the gateway ac
 
 1. Four kinds anchored to real contracts: the reference skill token, the live tender kernel (escrow visible in the token's vault), an address bound to the official identity registry, a gateway endpoint.
 2. The gateway (`node tools/gateway/server.js --rpc $RPC --registry <kernel> --domain registry.finchip.ai ...`) serves them as ARD entries; the conformance CLI passes against it.
-3. After `transfer()`, `controllerOf(skill)` is the second holder, the canonical URN is reported as stale, and the record is served under the alias; after `close()`, the task record drops to level 1.
+3. After `transfer()`, `controllerOf(skill)` is the new holder, the canonical URN is reported as stale, and the record is unadopted: withheld from search and listing, inspectable at `GET /records/<id>` with `value:adopted: false`. After `adopt()` by the new holder the record is served again under the alias. After `close()`, the task record drops to level 1.

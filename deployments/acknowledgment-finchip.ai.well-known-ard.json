@@ -6,8 +6,7 @@
     }
   ],
   "value:controllers": [
-    "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
-    "did:pkh:eip155:11155111:0x81ecac174eba407efeb6698927d16dc6494ca60c"
+    "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25"
   ],
   "entries": [
     {
@@ -37,12 +36,12 @@
         "morning market summary as PDF"
       ],
       "version": "1.4.0",
-      "updatedAt": "2026-10-15T06:00:00Z",
+      "updatedAt": "2026-10-16T00:00:00Z",
       "trustManifest": {
         "identity": "finchip.ai"
       },
       "value:kind": "skill",
-      "value:controller": "did:pkh:eip155:11155111:0x81ecac174eba407efeb6698927d16dc6494ca60c",
+      "value:controller": "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
       "value:terms": {
         "unit": "call",
         "price": {
@@ -54,13 +53,12 @@
       "value:settlement": [
         {
           "rail": "onchain",
-          "payee": "eip155:11155111:0x81ecac174eba407efeb6698927d16dc6494ca60c",
+          "payee": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
           "asset": "eip155:11155111/slip44:60"
         }
       ],
       "value:provenance": {
-        "packageDigest": "sha256:2473da0a68d9f615c2167ec67af862665543c049bb254bbe3100a777a1c3144d",
-        "cardDigest": "sha256:30a18d1d73329fa02c81bca3e9c98ccb163325d5fafdefce913d1beee2fbad42"
+        "packageDigest": "sha256:2473da0a68d9f615c2167ec67af862665543c049bb254bbe3100a777a1c3144d"
       }
     },
     {
@@ -85,7 +83,7 @@
         "who pays for hourly basis data",
         "standing oracle bounties for agents"
       ],
-      "updatedAt": "2026-10-15T06:00:00Z",
+      "updatedAt": "2026-10-16T00:00:00Z",
       "trustManifest": {
         "identity": "finchip.ai"
       },
@@ -108,15 +106,14 @@
           "ref": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25"
         },
         "deadlines": {
-          "settleBy": "2026-12-14T06:08:40Z",
+          "settleBy": "2026-12-15T02:42:25Z",
           "judgmentWindow": "P7D"
         }
       },
       "value:kind": "task",
       "value:controller": "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
       "value:provenance": {
-        "packageDigest": "sha256:69896dd46399e6362a246b981932e09569e79bac3ec3b3056d99b12295efa73b",
-        "cardDigest": "sha256:ea83ec60fee323f9d4bb065bffbe3b5756415471f43df3737305530aa42ad8ef"
+        "packageDigest": "sha256:69896dd46399e6362a246b981932e09569e79bac3ec3b3056d99b12295efa73b"
       }
     },
     {
@@ -139,7 +136,7 @@
         "an agent that writes daily market briefs",
         "agent that can deliver hourly basis feeds"
       ],
-      "updatedAt": "2026-10-15T06:00:00Z",
+      "updatedAt": "2026-10-16T00:00:00Z",
       "trustManifest": {
         "identity": "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25"
       },

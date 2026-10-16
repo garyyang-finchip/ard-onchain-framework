@@ -1,51 +1,112 @@
 {
-  "snapshotBlock": 11919047,
-  "date": "2026-10-15",
-  "gateway": "tools/gateway/server.js --registry 0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A --from-block 11918525 --domain registry.finchip.ai --operator 0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25 --registry-name sepolia",
+  "snapshotBlock": 11924668,
+  "date": "2026-10-16",
+  "kernel": "0x126795eCa2A10ea5B2d065a8049e01B6fcDAaa78",
+  "gateway": "tools/gateway/server.js --registry 0x126795eCa2A10ea5B2d065a8049e01B6fcDAaa78 --from-block 11924570 --domain registry.finchip.ai --operator 0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25 --registry-name sepolia",
   "rpc": "pinned-block JSON-RPC replay of Sepolia responses recorded through a browser relay (the build environment has no RPC egress); gateway code unchanged",
+  "unadoptedState": {
+    "note": "state at the block after the skill transfer and before the new controller re-committed the descriptor",
+    "snapshotBlock": 11924598,
+    "served": 3,
+    "excluded": [
+      {
+        "recordId": "0x4683d8e06dbef3a5e684813f14d46eeab4f8d6d1d6382bf02b70cb5469d0c4b8",
+        "reasons": [
+          "descriptor not adopted by the current controller"
+        ]
+      }
+    ],
+    "inspected": {
+      "recordId": "0x4683d8e06dbef3a5e684813f14d46eeab4f8d6d1d6382bf02b70cb5469d0c4b8",
+      "consistent": true,
+      "adopted": false,
+      "reasons": [
+        "descriptor not adopted by the current controller"
+      ],
+      "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "attestor": "0x81EcAc174eba407efEb6698927d16dC6494CA60C",
+      "authoredValueController": "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
+      "entry": {
+        "kind": "skill",
+        "identifier": "urn:air:registry.finchip.ai:onchain:eip155-11155111-erc721-0x82f20280d49f1ddc67e1840339dbbc534fec8f97-1",
+        "binding": "claimed",
+        "level": 2,
+        "status": "Active",
+        "adopted": false,
+        "canonical": null,
+        "stale": [
+          "urn:air:finchip.ai:skills:daily-finance-brief"
+        ],
+        "anchor": "eip155:11155111/erc721:0x82f20280d49f1ddc67e1840339dbbc534fec8f97/1",
+        "descriptorHash": "sha256:4677233ba86ed4866e3fd67d02e61ee8069bb9ddf858520e3480267eddc803b4"
+      }
+    },
+    "searchResultsFor_finance_brief_daily": [
+      "urn:air:registry.finchip.ai:onchain:eip155-11155111-0xccfdee360c9cdc79005e4dda9845f3a24ee37a25"
+    ],
+    "conformance": {
+      "manifest": {
+        "exit": 0,
+        "summary": "CONFORMANCE STATUS: PASS | Validated with 0 critical specification errors and 0 warnings and 1 informational messages."
+      },
+      "registry": {
+        "exit": 0,
+        "summary": "CONFORMANCE STATUS: PASS | Validated with 0 critical specification errors and 0 warnings."
+      }
+    }
+  },
   "conformance": {
-    "manifest": "PASS, 0 critical errors, 0 warnings, 2 informational",
-    "registry": "PASS, 0 critical errors, 0 warnings"
+    "manifest": {
+      "exit": 0,
+      "summary": "CONFORMANCE STATUS: PASS | Validated with 0 critical specification errors and 0 warnings and 2 informational messages."
+    },
+    "registry": {
+      "exit": 0,
+      "summary": "CONFORMANCE STATUS: PASS | Validated with 0 critical specification errors and 0 warnings."
+    }
   },
   "served": [
     {
       "kind": "skill",
       "identifier": "urn:air:registry.finchip.ai:onchain:eip155-11155111-erc721-0x82f20280d49f1ddc67e1840339dbbc534fec8f97-1",
-      "binding": "contested",
+      "binding": "claimed",
       "level": 2,
       "status": "Active",
+      "adopted": true,
       "canonical": null,
       "stale": [
         "urn:air:finchip.ai:skills:daily-finance-brief"
       ],
       "anchor": "eip155:11155111/erc721:0x82f20280d49f1ddc67e1840339dbbc534fec8f97/1",
-      "descriptorHash": "sha256:42f1025b57d655cccfa3f5ee3853b81047d0415d89c9b8b25d7eea6702789551"
+      "descriptorHash": "sha256:4677233ba86ed4866e3fd67d02e61ee8069bb9ddf858520e3480267eddc803b4"
     },
     {
       "kind": "task",
-      "identifier": "urn:air:registry.finchip.ai:onchain:eip155-11155111-erc721-0xa62059a498e40c4ae4af926e2b00c1ff122bddb7-17",
-      "binding": "contested",
-      "level": 1,
+      "identifier": "urn:air:registry.finchip.ai:onchain:eip155-11155111-erc721-0xa62059a498e40c4ae4af926e2b00c1ff122bddb7-18",
+      "binding": "claimed",
+      "level": 2,
       "status": "Active",
+      "adopted": true,
       "canonical": null,
       "stale": [
         "urn:air:finchip.ai:tenders:oracle-basis-feed"
       ],
-      "anchor": "eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/17",
-      "descriptorHash": "sha256:2ddc8d8e31338f73da332675b30758c0ada638b745316808459be06030209d83"
+      "anchor": "eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/18",
+      "descriptorHash": "sha256:6790eb2be59414549d1a8f3379338361d5c586b7dceea0d31df1caa4d9657831"
     },
     {
       "kind": "agent",
       "identifier": "urn:air:registry.finchip.ai:onchain:eip155-11155111-0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
-      "binding": "contested",
+      "binding": "claimed",
       "level": 2,
       "status": "Active",
+      "adopted": true,
       "canonical": null,
       "stale": [
         "urn:air:finchip.ai:agents:finch-analyst"
       ],
       "anchor": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
-      "descriptorHash": "sha256:5a081d12a48970b134096ce11271b8af4b7f656caa1a59b094c5fab59e48b4a3"
+      "descriptorHash": "sha256:8d3f624c8fa265fc791d90c79bc31b10a0843df36a9d7520f537d9f0876f25f0"
     },
     {
       "kind": "registry",
@@ -53,16 +114,40 @@
       "binding": "claimed",
       "level": 1,
       "status": "Active",
+      "adopted": true,
       "canonical": null,
       "stale": [
         "urn:air:registry.finchip.ai:registry:sepolia"
       ],
       "anchor": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25#fa187c889e870315fda7522dc8e0bfded5d31e855837bab516a2e5f99f27dd6a",
-      "descriptorHash": "sha256:1c771e2b2cbf98d3894bc871a7d832f67ddece7af2d48d51a64f9474dde12efa"
+      "descriptorHash": "sha256:b631b153d2e4a6c640094c30eb35d14439f281f358c2b8cc9a6c7770235cf6bb"
     }
   ],
+  "inspected": {
+    "recordId": "0x4683d8e06dbef3a5e684813f14d46eeab4f8d6d1d6382bf02b70cb5469d0c4b8",
+    "consistent": true,
+    "adopted": true,
+    "reasons": [],
+    "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+    "attestor": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+    "authoredValueController": "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
+    "entry": {
+      "kind": "skill",
+      "identifier": "urn:air:registry.finchip.ai:onchain:eip155-11155111-erc721-0x82f20280d49f1ddc67e1840339dbbc534fec8f97-1",
+      "binding": "claimed",
+      "level": 2,
+      "status": "Active",
+      "adopted": true,
+      "canonical": null,
+      "stale": [
+        "urn:air:finchip.ai:skills:daily-finance-brief"
+      ],
+      "anchor": "eip155:11155111/erc721:0x82f20280d49f1ddc67e1840339dbbc534fec8f97/1",
+      "descriptorHash": "sha256:4677233ba86ed4866e3fd67d02e61ee8069bb9ddf858520e3480267eddc803b4"
+    }
+  },
   "projectedWithAcknowledgments": {
-    "note": "the same run with --manifest-override finchip.ai=deployments/acknowledgment-finchip.ai.well-known-ard.json and the gateway manifest for registry.finchip.ai: what resolves once those files are published",
+    "note": "the same run with --manifest-override finchip.ai=deployments/acknowledgment-finchip.ai.well-known-ard.json and --manifest-override registry.finchip.ai=<the gateway's own manifest>: the state once https://finchip.ai/.well-known/ard.json serves that file and the gateway is reachable at registry.finchip.ai",
     "entries": [
       {
         "kind": "skill",
@@ -70,21 +155,23 @@
         "binding": "verified",
         "level": 2,
         "status": "Active",
+        "adopted": true,
         "canonical": "urn:air:finchip.ai:skills:daily-finance-brief",
-        "stale": null,
+        "stale": [],
         "anchor": "eip155:11155111/erc721:0x82f20280d49f1ddc67e1840339dbbc534fec8f97/1",
-        "descriptorHash": "sha256:42f1025b57d655cccfa3f5ee3853b81047d0415d89c9b8b25d7eea6702789551"
+        "descriptorHash": "sha256:4677233ba86ed4866e3fd67d02e61ee8069bb9ddf858520e3480267eddc803b4"
       },
       {
         "kind": "task",
         "identifier": "urn:air:finchip.ai:tenders:oracle-basis-feed",
         "binding": "verified",
-        "level": 1,
+        "level": 2,
         "status": "Active",
+        "adopted": true,
         "canonical": "urn:air:finchip.ai:tenders:oracle-basis-feed",
-        "stale": null,
-        "anchor": "eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/17",
-        "descriptorHash": "sha256:2ddc8d8e31338f73da332675b30758c0ada638b745316808459be06030209d83"
+        "stale": [],
+        "anchor": "eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/18",
+        "descriptorHash": "sha256:6790eb2be59414549d1a8f3379338361d5c586b7dceea0d31df1caa4d9657831"
       },
       {
         "kind": "agent",
@@ -92,10 +179,11 @@
         "binding": "verified",
         "level": 2,
         "status": "Active",
+        "adopted": true,
         "canonical": "urn:air:finchip.ai:agents:finch-analyst",
-        "stale": null,
+        "stale": [],
         "anchor": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
-        "descriptorHash": "sha256:5a081d12a48970b134096ce11271b8af4b7f656caa1a59b094c5fab59e48b4a3"
+        "descriptorHash": "sha256:8d3f624c8fa265fc791d90c79bc31b10a0843df36a9d7520f537d9f0876f25f0"
       },
       {
         "kind": "registry",
@@ -103,11 +191,84 @@
         "binding": "verified",
         "level": 1,
         "status": "Active",
+        "adopted": true,
         "canonical": "urn:air:registry.finchip.ai:registry:sepolia",
-        "stale": null,
+        "stale": [],
+        "anchor": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25#fa187c889e870315fda7522dc8e0bfded5d31e855837bab516a2e5f99f27dd6a",
+        "descriptorHash": "sha256:b631b153d2e4a6c640094c30eb35d14439f281f358c2b8cc9a6c7770235cf6bb"
+      }
+    ],
+    "conformance": {
+      "manifest": {
+        "exit": 0,
+        "summary": "CONFORMANCE STATUS: PASS | Validated with 0 critical specification errors and 0 warnings and 2 informational messages."
+      },
+      "registry": {
+        "exit": 0,
+        "summary": "CONFORMANCE STATUS: PASS | Validated with 0 critical specification errors and 0 warnings."
+      }
+    }
+  },
+  "previousRun": {
+    "kernel": "0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A",
+    "snapshotBlock": 11919047,
+    "served": [
+      {
+        "kind": "skill",
+        "identifier": "urn:air:registry.finchip.ai:onchain:eip155-11155111-erc721-0x82f20280d49f1ddc67e1840339dbbc534fec8f97-1",
+        "binding": "contested",
+        "level": 2,
+        "status": "Active",
+        "canonical": null,
+        "stale": [
+          "urn:air:finchip.ai:skills:daily-finance-brief"
+        ],
+        "anchor": "eip155:11155111/erc721:0x82f20280d49f1ddc67e1840339dbbc534fec8f97/1",
+        "descriptorHash": "sha256:42f1025b57d655cccfa3f5ee3853b81047d0415d89c9b8b25d7eea6702789551"
+      },
+      {
+        "kind": "task",
+        "identifier": "urn:air:registry.finchip.ai:onchain:eip155-11155111-erc721-0xa62059a498e40c4ae4af926e2b00c1ff122bddb7-17",
+        "binding": "contested",
+        "level": 1,
+        "status": "Active",
+        "canonical": null,
+        "stale": [
+          "urn:air:finchip.ai:tenders:oracle-basis-feed"
+        ],
+        "anchor": "eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/17",
+        "descriptorHash": "sha256:2ddc8d8e31338f73da332675b30758c0ada638b745316808459be06030209d83"
+      },
+      {
+        "kind": "agent",
+        "identifier": "urn:air:registry.finchip.ai:onchain:eip155-11155111-0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
+        "binding": "contested",
+        "level": 2,
+        "status": "Active",
+        "canonical": null,
+        "stale": [
+          "urn:air:finchip.ai:agents:finch-analyst"
+        ],
+        "anchor": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
+        "descriptorHash": "sha256:5a081d12a48970b134096ce11271b8af4b7f656caa1a59b094c5fab59e48b4a3"
+      },
+      {
+        "kind": "registry",
+        "identifier": "urn:air:registry.finchip.ai:onchain:eip155-11155111-0xccfdee360c9cdc79005e4dda9845f3a24ee37a25-fa187c889e870315fda7522dc8e0bfded5d31e855837bab516a2e5f99f27dd6a",
+        "binding": "claimed",
+        "level": 1,
+        "status": "Active",
+        "canonical": null,
+        "stale": [
+          "urn:air:registry.finchip.ai:registry:sepolia"
+        ],
         "anchor": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25#fa187c889e870315fda7522dc8e0bfded5d31e855837bab516a2e5f99f27dd6a",
         "descriptorHash": "sha256:1c771e2b2cbf98d3894bc871a7d832f67ddece7af2d48d51a64f9474dde12efa"
       }
-    ]
+    ],
+    "conformance": {
+      "manifest": "PASS, 0 critical errors, 0 warnings, 2 informational",
+      "registry": "PASS, 0 critical errors, 0 warnings"
+    }
   }
 }

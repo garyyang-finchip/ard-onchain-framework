@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-10-15T06:34:18.415Z",
+  "ranAt": "2026-10-16T02:27:55.949Z",
   "chainId": 31337,
   "steps": [
     "kernel 0x5fbdb2315678afecb367f032d93f642f64180aa3, kinds registered, real skill/task/AID contracts deployed",
@@ -17,7 +17,8 @@
     "/.well-known/ard.json: the gateway lists itself and every served record",
     "ARD conformance CLI (vendored, schema mode): manifest PASS — CONFORMANCE STATUS: PASS | Validated with 0 critical specification errors and 0 warnings and 2 informational messages.",
     "ARD conformance CLI (vendored): registry PASS — CONFORMANCE STATUS: PASS | Validated with 0 critical specification errors and 0 warnings.",
-    "skill transferred to mallory: binding contested, canonical URN stale, served under alias",
+    "skill transferred to mallory: descriptor committed by alice is unadopted -> excluded from discovery, inspectable at /records",
+    "mallory re-committed the descriptor (same hash): adopted, binding contested, canonical URN stale, served under alias",
     "skill package updated under the old descriptor: provenance mismatch -> level 1",
     "tender cancelled: level 1",
     "agent record retired: dropped from search, still inspectable at /records/<id>"

@@ -1,22 +1,24 @@
 # Sepolia evidence — ARD Onchain reference deployment
 
-Deployed 2026-10-15 on Sepolia (chain 11155111) from `0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25`. This document records what is on chain, what the gateway served from it, and how to check both. Machine-readable copies: `deployments/sepolia.json` (addresses, anchors, records, claims, verification), `deployments/sepolia-cases.json` (every transaction with block and gas) and `docs/gateway-sepolia-last-run.json` (the served entries and the conformance results). State below was read at block 11919047.
+Current deployment: kernel **v1.1** (attestor / adoption semantics), deployed 2026-10-16 on Sepolia (chain 11155111) from `0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25`, reusing the adapters, the reference agent identity registry, the reference skill token and the official ERC-8004 identity of the first deployment (2026-10-15, kernel `0x10c6d098…8A8A`, kept on chain as history; see the appendix). This document records what is on chain, what the gateway served from it, and how to check both. Machine-readable copies: `deployments/sepolia.json` (addresses, anchors, records, the adoption demonstration, claims, verification), `deployments/sepolia-cases.json` (every transaction with block and gas; the first run under `previousRun`) and `docs/gateway-sepolia-last-run.json` (the served entries, the unadopted state and the conformance results). State below was read at block 11924668; the unadopted state at block 11924598.
 
 ## Contracts
 
 | contract | address | role |
 |---|---|---|
-| `ARDOnchainRegistry` | [`0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A`](https://sepolia.etherscan.io/address/0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A) | the kernel (records, domain claims, kind table) |
-| `SkillAdapter` | [`0x08Be92a9446592fAeaaB976556e09e028662F12F`](https://sepolia.etherscan.io/address/0x08Be92a9446592fAeaaB976556e09e028662F12F) | kind `skill` over token-bound executable skills |
-| `TaskAdapter` | [`0x0BAB1fEE185A4803a1aC65F6dA59941eeCaE71dB`](https://sepolia.etherscan.io/address/0x0BAB1fEE185A4803a1aC65F6dA59941eeCaE71dB) | kind `task` over token-bound task tenders |
-| `AgentAdapter` | [`0x38898d038F4a8fCE3e13447bE7Eb1ECd128cE25C`](https://sepolia.etherscan.io/address/0x38898d038F4a8fCE3e13447bE7Eb1ECd128cE25C) | kind `agent`, liveness from the AID registry below |
-| `RegistryAdapter` | [`0x32C85829da0be0Fd66ac45eF54d4c393Fcd7149E`](https://sepolia.etherscan.io/address/0x32C85829da0be0Fd66ac45eF54d4c393Fcd7149E) | kind `registry` (gateway endpoints) |
-| `AIDRegistry` (reference, 30 d default / 365 d max liveness) | [`0x36E4a7BDe8a9D7d445042495180b64C7AF77Fd7E`](https://sepolia.etherscan.io/address/0x36E4a7BDe8a9D7d445042495180b64C7AF77Fd7E) | address-anchored agent identity, bound to the official ERC-8004 Identity Registry |
-| `SkillToken` (reference fixture, `ARD Onchain evidence skill` / `ARDS`) | [`0x82F20280D49F1DDC67e1840339dBbc534FEC8F97`](https://sepolia.etherscan.io/address/0x82F20280D49F1DDC67e1840339dBbc534FEC8F97) | the skill kernel the skill record is anchored to |
+| `ARDOnchainRegistry` v1.1 | [`0x126795eCa2A10ea5B2d065a8049e01B6fcDAaa78`](https://sepolia.etherscan.io/address/0x126795eCa2A10ea5B2d065a8049e01B6fcDAaa78) | the kernel (records with attestor, domain claims, kind table); deployed 2026-10-16 |
+| `SkillAdapter` | [`0x08Be92a9446592fAeaaB976556e09e028662F12F`](https://sepolia.etherscan.io/address/0x08Be92a9446592fAeaaB976556e09e028662F12F) | kind `skill` over token-bound executable skills (reused) |
+| `TaskAdapter` | [`0x0BAB1fEE185A4803a1aC65F6dA59941eeCaE71dB`](https://sepolia.etherscan.io/address/0x0BAB1fEE185A4803a1aC65F6dA59941eeCaE71dB) | kind `task` over token-bound task tenders (reused) |
+| `AgentAdapter` | [`0x38898d038F4a8fCE3e13447bE7Eb1ECd128cE25C`](https://sepolia.etherscan.io/address/0x38898d038F4a8fCE3e13447bE7Eb1ECd128cE25C) | kind `agent`, liveness from the AID registry below (reused) |
+| `RegistryAdapter` | [`0x32C85829da0be0Fd66ac45eF54d4c393Fcd7149E`](https://sepolia.etherscan.io/address/0x32C85829da0be0Fd66ac45eF54d4c393Fcd7149E) | kind `registry` (gateway endpoints) (reused) |
+| `AIDRegistry` (reference, 30 d default / 365 d max liveness) | [`0x36E4a7BDe8a9D7d445042495180b64C7AF77Fd7E`](https://sepolia.etherscan.io/address/0x36E4a7BDe8a9D7d445042495180b64C7AF77Fd7E) | address-anchored agent identity, bound to the official ERC-8004 Identity Registry (reused) |
+| `SkillToken` (reference fixture, `ARD Onchain evidence skill` / `ARDS`) | [`0x82F20280D49F1DDC67e1840339dBbc534FEC8F97`](https://sepolia.etherscan.io/address/0x82F20280D49F1DDC67e1840339dBbc534FEC8F97) | the skill kernel the skill record is anchored to (reused) |
 
 Live contracts used as anchors, not deployed by this run: the token-bound task tender kernel `TaskToken` [`0xA62059A498E40C4Ae4aF926E2B00C1Ff122bDdb7`](https://sepolia.etherscan.io/address/0xA62059A498E40C4Ae4aF926E2B00C1Ff122bDdb7) and the official ERC-8004 Identity Registry [`0x8004A818BFB912233c491871b3d84c89A494BD9e`](https://sepolia.etherscan.io/address/0x8004A818BFB912233c491871b3d84c89A494BD9e).
 
-Source verification: all seven contracts are verified on Sourcify as **exact matches** (creation and runtime bytecode, metadata hash included; `https://repo.sourcify.dev/11155111/<address>`), from solc 0.8.24+commit.e11b9ed9, optimizer 200 runs, EVM cancun. The same standard-JSON inputs reproduce the signed deployment transactions byte for byte; Etherscan verification is submitted from them with an API key.
+Adapters are stateless with respect to the kernel, so a new kernel reuses them: the kind table of the new instance points at the same four adapter addresses. The kernel is the only contract that changed between the two deployments (runtime 9,939 bytes; `registrant` became `attestor`, set by `register` and by every `updateDescriptor`).
+
+Source verification: the v1.1 kernel is verified on Sourcify as an **exact match** (creation and runtime bytecode, metadata hash included; `https://repo.sourcify.dev/11155111/0x126795eCa2A10ea5B2d065a8049e01B6fcDAaa78`), from solc 0.8.24+commit.e11b9ed9, optimizer 200 runs, EVM cancun, source unit names as in this repository; the six reused contracts keep their exact matches from 2026-10-15. The same standard-JSON input reproduces the signed deployment transaction byte for byte; Etherscan verification was forwarded by Sourcify and can also be submitted from the input with an API key.
 
 ## Kinds
 
@@ -29,46 +31,57 @@ Source verification: all seven contracts are verified on Sourcify as **exact mat
 
 ## Anchors and records
 
-One record per kind, all registered by the deployer (the controller of every anchor at registration time):
+One record per kind. Three were registered by the deployer; the skill record was registered by the address that held the skill at the time (the second holder of the first run), which is what the adoption demonstration below needs.
 
-| kind | anchor (CAIP) | record id | canonical URN claimed | descriptor hash (current) |
+| kind | anchor (CAIP) | record id | canonical URN claimed | descriptor hash |
 |---|---|---|---|---|
-| `skill` | `eip155:11155111/erc721:0x82f20280d49f1ddc67e1840339dbbc534fec8f97/1` | `0x4683d8e0…c4b8` | `urn:air:finchip.ai:skills:daily-finance-brief` | `0x42f1025b…9551` |
-| `task` | `eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/17` | `0xd9f72782…9000` | `urn:air:finchip.ai:tenders:oracle-basis-feed` | `0x2ddc8d8e…9d83` |
-| `agent` | `eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25` | `0xb2e9339e…6489` | `urn:air:finchip.ai:agents:finch-analyst` | `0x5a081d12…b4a3` |
-| `registry` | `eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25#fa187c88…27dd6a` | `0x2abc385a…418c` | `urn:air:registry.finchip.ai:registry:sepolia` | `0x1c771e2b…2efa` |
+| `skill` | `eip155:11155111/erc721:0x82f20280d49f1ddc67e1840339dbbc534fec8f97/1` | `0x4683d8e0…c4b8` | `urn:air:finchip.ai:skills:daily-finance-brief` | `0x4677233b…03b4` |
+| `task` | `eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/18` | `0x5d53381c…a8e5` | `urn:air:finchip.ai:tenders:oracle-basis-feed` | `0x6790eb2b…7831` |
+| `agent` | `eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25` | `0xb2e9339e…6489` | `urn:air:finchip.ai:agents:finch-analyst` | `0x8d3f624c…25f0` |
+| `registry` | `eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25#fa187c88…27dd6a` | `0x2abc385a…418c` | `urn:air:registry.finchip.ai:registry:sepolia` | `0xb631b153…f6bb` |
 
-Full record ids and hashes are in `deployments/sepolia.json`; the descriptors themselves are authored by `tools/make-sepolia-descriptors.js` and kept in `deployments/sepolia-descriptors.json`.
+Full record ids and hashes are in `deployments/sepolia.json`; the descriptors are authored by `tools/make-sepolia-descriptors.js` and kept in `deployments/sepolia-descriptors.json`.
 
-- The skill is token #1 of the reference skill token (`skillMd` = SHA-256 of `# ARD Onchain evidence skill`, package digest `0x2473da0a…3144d`), minted to the deployer and later transferred to a second holder `0x81EcAc174eba407efEb6698927d16dC6494CA60C`.
-- The task is tender #17 of the live tender kernel: native asset, 0.0005 ETH per completion, two completions, judged by the publisher, settle-by 60 days, 7-day judgment window; 0.001 ETH escrowed in the tender's vault; later cancelled by its update authority.
+- The skill is token #1 of the reference skill token (`skillMd` = SHA-256 of `# ARD Onchain evidence skill`, package digest `0x2473da0a…3144d`). It was held by `0x81EcAc174eba407efEb6698927d16dC6494CA60C` when the run started, registered on the new kernel by that holder, then transferred back to the deployer, who adopted the descriptor (below).
+- The task is tender #18 of the live tender kernel, minted for this run: native asset, 0.0005 ETH per completion, two completions, judged by the publisher, settle-by 2026-12-15, 7-day judgment window; 0.001 ETH escrowed in the tender's vault; live (not cancelled), so the record is backed. Tender #17 of the first run stays cancelled.
 - The agent is the deployer address itself, bound through the reference AID registry to agentId 10855 on the official ERC-8004 Identity Registry (state `ACTIVE`).
-- The registry anchor is the deployer address with the discriminator `keccak256("https://registry.finchip.ai/api/v1/")`.
-- Domain claims on chain: `finchip.ai` by the deployer and, after the transfer, by the second holder; `registry.finchip.ai` by the deployer.
-- The descriptors were replaced once (`updateDescriptor`, four `DescriptorUpdated` events): the first versions carried the pre-numbering context IRI, the current ones carry `https://eips.ethereum.org/assets/eip-8444/ns#`, native-asset terms and the real anchors. The skill's replacement was signed by the second holder, because after the transfer only the live controller can mutate the record.
+- The registry anchor is the deployer address with the discriminator `keccak256("https://registry.finchip.ai/api/v1/")`; its descriptor's `value:indexes` names the v1.1 kernel.
+- Domain claims on the new kernel: `finchip.ai` and `registry.finchip.ai`, both by the deployer. (Claims live in the kernel, so the first kernel's claims do not carry over.)
 
-Descriptors are published as `data:application/json;base64` URIs, so every record is self-contained; the committed hash is SHA-256 over the RFC 8785 canonical form of the content members (`@context`, `@id`, `identifier`, `trustManifest` excluded).
+Descriptors are published as `data:application/json;base64` URIs, so every record is self-contained; the committed hash is SHA-256 over the RFC 8785 canonical form of the content members (`@context`, `@id`, `identifier`, `trustManifest` excluded). All four carry the `https://eips.ethereum.org/assets/eip-8444/ns#` context and `updatedAt` 2026-10-16.
 
-## Resolved state served by the gateway (block 11919047)
+## Adoption demonstration (the reviewer's scenario)
 
-`tools/gateway/server.js` indexed the kernel and served the four records as ARD entries; the vendored ARD conformance CLI passed in both modes (manifest with JSON Schema: `PASS`, 0 errors, 0 warnings, 2 informational; registry: `PASS`, 0 errors, 0 warnings). The served manifest and the probe results are in `docs/gateway-sepolia-last-run.json`.
+The thread review asked what happens when an anchor changes hands: the record keeps the descriptor the former controller committed, so the new controller would advertise the former controller's endpoint, terms and payee. The run reproduces the scenario on chain, including the "pre-naming" variant in which the seller writes the buyer into the descriptor in advance:
+
+1. The second holder, controlling skill #1, registers the skill record with a descriptor whose authored `value:controller` and settlement `payee` already name the deployer (transaction 2 of the second holder). The kernel records the second holder as the attestor — the address that sent the committing transaction, not the address written in the descriptor.
+2. The second holder transfers skill #1 to the deployer (transaction 3 of the second holder, block 11924594). `controllerOf` now returns the deployer; `attestor` is still the second holder.
+3. **State at block 11924598 (unadopted):** the gateway indexes four records and serves three. The skill record is excluded with the reason `descriptor not adopted by the current controller`; `POST /search` for "finance brief daily" does not return it; `GET /records/0x4683d8e0…c4b8` still answers, with `consistent: true`, `adopted: false`, `controller` = deployer, `attestor` = second holder and the entry flagged `value:adopted: false` — the authored `value:controller` naming the deployer changed nothing. The conformance CLI passes on the three-entry manifest.
+4. The deployer calls `updateDescriptor` with the **same** hash, URI and URN (transaction 52, block 11924660, 233,165 gas — one call, no new descriptor). The kernel records the deployer as the attestor.
+5. **State at block 11924668 (adopted):** all four records served, `value:adopted: true`, the skill at level 2 under the gateway alias with its canonical URN reported stale until the domain acknowledges.
+
+`deployments/sepolia.json` carries the two readings under `adoptionDemonstration`; `docs/gateway-sepolia-last-run.json` carries the gateway's view of both states under `unadoptedState` and `served`.
+
+## Resolved state served by the gateway (block 11924668)
+
+`tools/gateway/server.js` indexed the v1.1 kernel and served the four records as ARD entries; the vendored ARD conformance CLI passed in both modes (manifest with JSON Schema: `PASS`, 0 errors, 0 warnings, 2 informational; registry: `PASS`, 0 errors, 0 warnings). The served manifest and the probe results are in `docs/gateway-sepolia-last-run.json`.
 
 Before the publisher domains serve their acknowledgments (the state at the time of writing):
 
-| kind | identifier served | `value:binding` | `value:level` | `value:status` | why |
+| kind | identifier served | `value:binding` | `value:level` | `value:adopted` | why |
 |---|---|---|---|---|---|
-| `skill` | alias `urn:air:registry.finchip.ai:onchain:eip155-11155111-erc721-0x82f2…8f97-1` | `contested` | 2 | Active | two addresses claim `finchip.ai` (deployer and second holder) and the domain has acknowledged neither; the canonical URN is reported in `value:stale`; the token is still backed and its package digest equals the anchor hint |
-| `task` | alias `…-0xa620…ddb7-17` | `contested` | 1 | Active | same two claimants; the tender is cancelled, so the record is no longer backed |
-| `agent` | alias `…-0xccfd…7a25` | `contested` | 2 | Active | same two claimants; the identity is `ACTIVE` in the AID registry |
-| `registry` | alias `…-0xccfd…7a25-fa18…dd6a` | `claimed` | 1 | Active | the deployer alone claims `registry.finchip.ai`, not yet acknowledged; registry endpoints are capped at level 1 |
+| `skill` | alias `urn:air:registry.finchip.ai:onchain:eip155-11155111-erc721-0x82f2…8f97-1` | `claimed` | 2 | true | the deployer claims `finchip.ai` and the domain has not yet acknowledged; the canonical URN is reported in `value:stale`; the token is backed and its package digest equals the anchor hint; attestor = controller |
+| `task` | alias `…-0xa620…ddb7-18` | `claimed` | 2 | true | same claim; tender #18 is live and escrowed |
+| `agent` | alias `…-0xccfd…7a25` | `claimed` | 2 | true | same claim; the identity is `ACTIVE` in the AID registry |
+| `registry` | alias `…-0xccfd…7a25-fa18…dd6a` | `claimed` | 1 | true | the deployer claims `registry.finchip.ai`, not yet acknowledged; registry endpoints are capped at level 1 |
 
-Once `https://finchip.ai/.well-known/ard.json` serves `deployments/acknowledgment-finchip.ai.well-known-ard.json` (both controllers listed, the three entries included) and the gateway at `registry.finchip.ai` serves its own manifest (`--operator 0xCcFD…7A25 --registry-name sepolia`), the same run resolves every record as `verified` under its canonical URN — skill L2, task L1, agent L2, registry L1 — which is what the `projectedWithAcknowledgments` block of `docs/gateway-sepolia-last-run.json` shows (produced with `--manifest-override`).
+Once `https://finchip.ai/.well-known/ard.json` serves `deployments/acknowledgment-finchip.ai.well-known-ard.json` (the deployer listed in `value:controllers`, the three entries included) and the gateway at `registry.finchip.ai` serves its own manifest (`--operator 0xCcFD…7A25 --registry-name sepolia`), the same run resolves every record as `verified` under its canonical URN — skill L2, task L2, agent L2, registry L1 — which is what the `projectedWithAcknowledgments` block of `docs/gateway-sepolia-last-run.json` shows (produced with `--manifest-override` for both domains).
 
 The sandbox that produced this run has no outbound RPC access, so the gateway was run against a pinned-block JSON-RPC replay of Sepolia (every `eth_getLogs` / `eth_call` answered from responses recorded through a browser relay); the gateway code is unchanged and anyone can repeat the run live:
 
 ```bash
 node tools/gateway/server.js --rpc https://ethereum-sepolia-rpc.publicnode.com \
-  --registry 0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A --from-block 11918525 \
+  --registry 0x126795eCa2A10ea5B2d065a8049e01B6fcDAaa78 --from-block 11924570 \
   --domain registry.finchip.ai --public-url https://registry.finchip.ai/api/v1/ \
   --operator 0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25 --registry-name sepolia --port 9010
 python3 tools/conformance/conformance-test manifest http://127.0.0.1:9010/.well-known/ard.json
@@ -77,9 +90,44 @@ python3 tools/conformance/conformance-test registry http://127.0.0.1:9010/api/v1
 
 ## Transactions
 
-Thirty transactions, all successful, signed offline and broadcast through a public Sepolia endpoint. The first attempt at the deployments (nonces 0–5, not listed) ran out of gas because Sepolia's current gas schedule charges several times more per deployed byte and per storage write than anvil's default schedule — every limit below comes from a live `eth_estimateGas`. (Sepolia is already on the next protocol upgrade: receipts of plain ETH transfers carry a transfer log from the system address, and contract creation and storage are repriced.)
+Fifteen transactions, all successful, signed offline and broadcast through a public Sepolia endpoint; thirteen by the deployer (nonces 40–52) and two by the second holder (nonces 2–3). Every gas limit comes from a live `eth_estimateGas` (Sepolia's current schedule charges several times more per deployed byte and per storage write than anvil's default schedule: 15.69 M for the kernel, 5.5–8.2 M per `register` with a 1.2–2.1 KB `data:` descriptor). Re-committing an unchanged descriptor is cheap (233 k), because the storage already holds the values.
 
 <!-- tx-table:start -->
+| # | phase | transaction | block | gas used | effect |
+|---|---|---|---|---|---|
+| 40 | deploy | `deploy ARDOnchainRegistry v1.1` [0xfcba5283…855f](https://sepolia.etherscan.io/tx/0xfcba5283bee1610dc2d2b375be85aedb11b72069310ca8d0f8fc08b3c346855f) | 11924570 | 15,690,770 | created 0x126795eCa2A10ea5B2d065a8049e01B6fcDAaa78 (kernel with attestor / adoption semantics) |
+| 41 | configure | `registerKind skill` [0xba6f5e8d…6f8d](https://sepolia.etherscan.io/tx/0xba6f5e8dcbb1307ea13f76de259861f53963351d721762b729abd3ddef2d6f8d) | 11924576 | 135,663 | kind registered on the new kernel (existing SkillAdapter; write-once) |
+| 42 | configure | `registerKind task` [0x807d2cb0…8a3d](https://sepolia.etherscan.io/tx/0x807d2cb0961c3802a4a9f2728b46037ca4cc15694e9056dfc5e962788b9e8a3d) | 11924576 | 135,651 | kind registered on the new kernel (existing TaskAdapter; write-once) |
+| 43 | configure | `registerKind agent` [0x8fdcfe38…5ceb](https://sepolia.etherscan.io/tx/0x8fdcfe385d8856d32e02399fd2c00fe830260cb1105293108afb795fc9805ceb) | 11924576 | 135,663 | kind registered on the new kernel (existing AgentAdapter; write-once) |
+| 44 | configure | `registerKind registry` [0x24a5eabd…22e8](https://sepolia.etherscan.io/tx/0x24a5eabdb1aa0b436c0183f892870e9647ad9d4419d03665191327557bce22e8) | 11924576 | 135,676 | kind registered on the new kernel (existing RegistryAdapter; write-once) |
+| 45 | configure | `TaskToken.mintTask -> #18` [0x96d7b5e3…3693](https://sepolia.etherscan.io/tx/0x96d7b5e30d12303666cee6435a069ea6b3c1bb9892392fb2a752d888d5c13693) | 11924576 | 3,420,926 | tender #18 minted on the live tender kernel (60-day settle-by) |
+| 46 | records | `TaskToken.fundTask #18 0.001 ETH` [0x69d58a90…038c](https://sepolia.etherscan.io/tx/0x69d58a90587edbc9bf66dad85c2dc479058a667782d10ba948a5d50d95c7038c) | 11924591 | 381,329 | 0.001 ETH escrowed in the tender vault |
+| 47 | records | `register task record` [0x70c328bb…5544](https://sepolia.etherscan.io/tx/0x70c328bb97e4e12c6d5ea2a23e8b8d93d7d521442e51511c909d6ec3de385544) | 11924591 | 8,243,909 | record registered (Registered event; attestor = deployer) |
+| 48 | records | `register agent record` [0x4aa1335a…4e46](https://sepolia.etherscan.io/tx/0x4aa1335ad30182aa059d77554cbfe573ecb7d7d453942ab7cb971ddc7bf54e46) | 11924591 | 6,349,184 | record registered (Registered event; attestor = deployer) |
+| 49 | records | `register registry record` [0x0a3dbb3f…7fa9](https://sepolia.etherscan.io/tx/0x0a3dbb3f59f3d54d07d12eeb524a79c9aa60316ce0748264dbf826e5888e7fa9) | 11924591 | 5,459,517 | record registered (Registered event; attestor = deployer) |
+| 50 | records | `claimDomain(finchip.ai)` [0x8c31dd10…c807](https://sepolia.etherscan.io/tx/0x8c31dd1069fb55c7edd4c57852a6439ee06ea613407a78fbe9aa6fa95b6bc807) | 11924591 | 354,175 | publisher domain claimed by the deployer |
+| 51 | records | `claimDomain(registry.finchip.ai)` [0xdca92640…7cd8](https://sepolia.etherscan.io/tx/0xdca9264041ff0d29b3dfd44d43c44e42f577f86ff6895d6bd2924b72a8477cd8) | 11924591 | 357,646 | gateway domain claimed by the deployer |
+| 2 (second holder) | records | `register skill record (by holder2, descriptor names the deployer)` [0x0997de17…1482](https://sepolia.etherscan.io/tx/0x0997de17cddd12381f3cbad354c8a9205ad65f1c6e9159026cbf193dd5ce1482) | 11924591 | 7,244,713 | skill #1 registered by its holder; the descriptor already names the deployer as value:controller and payee (attestor = holder2) |
+| 3 (second holder) | transfer | `SkillToken.transferFrom(holder2 -> deployer, #1)` [0xa8c85d05…69c9](https://sepolia.etherscan.io/tx/0xa8c85d05461354bc7b0f8fe7c261b986792394dfe641fd7a761be21a105269c9) | 11924594 | 144,712 | skill #1 transferred to the deployer: controller moves, attestor stays holder2 -> record unadopted, withheld from discovery |
+| 52 | adopt | `updateDescriptor skill (same hash: adoption by the new controller)` [0x394d2b88…5641](https://sepolia.etherscan.io/tx/0x394d2b88ffd3b577ad560ff9be11d6116bf017d442308ef9d64b2c7716885641) | 11924660 | 233,165 | the deployer re-commits the same descriptor hash: attestor = deployer -> record adopted and served again (DescriptorUpdated event) |
+<!-- tx-table:end -->
+
+Total fees: about 0.00005 ETH (base fee 532 wei, priority fee 0.001 gwei) plus the 0.001 ETH escrow of tender #18.
+
+## What the run shows
+
+1. Four kinds anchored to real contracts on a kernel with adoption semantics: a token-bound executable skill, a live token-bound tender with visible escrow, an address bound to the official identity registry, and a gateway endpoint.
+2. The gateway serves them as ordinary ARD entries and passes the official conformance CLI; every entry carries `value:anchor`, `value:descriptorHash` and `value:adopted`, so any client can re-derive the record from the chain.
+3. Control and adoption are distinct on chain: after the transfer the record stayed consistent but unadopted, was withheld from search and listing, remained inspectable, and returned to discovery after one `updateDescriptor` by the new controller — with the same hash, and regardless of the authored `value:controller`.
+4. Binding states move with evidence, not with registration: `claimed` with one claimant and no acknowledgment, `verified` only once the domain acknowledges — and the acknowledgment file is the only step that remains on the publisher's side.
+
+## Appendix — first deployment (2026-10-15, superseded)
+
+The first kernel [`0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A`](https://sepolia.etherscan.io/address/0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A) (v0.3: `registrant` recorded at registration only, no adoption rule) stays on chain with its four records, its claims by two addresses and its history, and is no longer indexed by the reference gateway. Its run — thirty transactions, blocks 11918355–11919033, state read at 11919047 — deployed the kernel and the six contracts reused above, minted skill #1 to the deployer, minted and funded tender #17, bound the deployer to agentId 10855, registered one record per kind, claimed `finchip.ai`, transferred the skill to the second holder `0x81EcAc174eba407efEb6698927d16dC6494CA60C`, cancelled tender #17, replaced the four descriptors (the skill's by the second holder, as only the live controller can), and claimed `finchip.ai` from the second holder and `registry.finchip.ai` from the deployer. Its resolved state (skill `contested` L2, task `contested` L1, agent `contested` L2, registry `claimed` L1 before acknowledgment; all `verified` under the acknowledgment projection) and its conformance results are kept in `docs/gateway-sepolia-last-run.json` under `previousRun`; the records and claims in `deployments/sepolia.json` under `previousKernel`; the transactions in `deployments/sepolia-cases.json` under `previousRun`. All seven contracts of that run are Sourcify exact matches.
+
+The first attempt at the deployments (nonces 0–5, not listed) ran out of gas because of Sepolia's gas schedule — every later limit came from a live `eth_estimateGas`. (Sepolia is already on the next protocol upgrade: receipts of plain ETH transfers carry a transfer log from the system address, and contract creation and storage are repriced.)
+
+<!-- tx-table-v1:start -->
 | # | phase | transaction | block | gas used | effect |
 |---|---|---|---|---|---|
 | 12 | identity | `ERC-8004 register() on the official Identity Registry` [0xdee170d3…4210](https://sepolia.etherscan.io/tx/0xdee170d37aea41609e05d8afe20696a987705bb9a0967746e11e9d1710cd4210) | 11918355 | 372,643 | agentId 10855 minted to the deployer on the official ERC-8004 Identity Registry |
@@ -112,13 +160,6 @@ Thirty transactions, all successful, signed offline and broadcast through a publ
 | 39 | descriptors | `fund holder2 0.002 ETH` [0x5687e224…6604](https://sepolia.etherscan.io/tx/0x5687e2241c9dea83be86235ccb40faaae65e9e9f3524e43a1f02616a1aeb6604) | 11918970 | 204,600 | second holder funded for its own transaction |
 | 0 (second holder) | descriptors | `updateDescriptor skill (by holder2)` [0x6ae2586f…d222](https://sepolia.etherscan.io/tx/0x6ae2586fb12534e1cb6bade42ab1a64386f0566ce6f99bbb0b1298fcc157d222) | 11919033 | 727,484 | skill descriptor replaced by the new holder (only the live controller can) |
 | 1 (second holder) | descriptors | `claimDomain(finchip.ai) (by holder2)` [0xadf8685b…b10d](https://sepolia.etherscan.io/tx/0xadf8685b2006ac46441fe5bfd917270b4be677a9526fd6be61c3d7d5f9d4b10d) | 11919033 | 256,255 | publisher domain claimed by the new holder as well (two claimants until the domain acknowledges) |
-<!-- tx-table:end -->
+<!-- tx-table-v1:end -->
 
-Total fees: about 0.0001 ETH (base fee 17 wei, priority fee 0.001 gwei) plus the 0.001 ETH escrow and the 0.002 ETH given to the second holder.
-
-## What the run shows
-
-1. Four kinds anchored to real contracts: a token-bound executable skill, a live token-bound tender with visible escrow, an address bound to the official identity registry, and a gateway endpoint.
-2. The gateway serves them as ordinary ARD entries and passes the official conformance CLI; every entry carries `value:anchor` and `value:descriptorHash`, so any client can re-derive the record from the chain.
-3. Controllers are derived live: after the transfer, `controllerOf(skill)` is the second holder, who alone could replace the skill descriptor; the claimed URN is reported stale and the record is served under the gateway alias. After the cancellation, the task record drops to level 1 while staying Active and discoverable.
-4. Binding states move with evidence, not with registration: `claimed` with one claimant, `contested` with two, `third-party` where the controller never claimed the publisher domain, `verified` only once the domain acknowledges — and the acknowledgment file is the only step that remains on the publisher's side.
+Total fees of the first run: about 0.0001 ETH plus the 0.001 ETH escrow (tender #17, since cancelled) and the 0.002 ETH given to the second holder.

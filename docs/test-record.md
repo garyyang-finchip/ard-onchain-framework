@@ -1,4 +1,4 @@
-# Test record — reference implementation v0.3 (2026-10-13)
+# Test record — reference implementation v0.4 (2026-10-16)
 
 ## Toolchain
 
@@ -11,7 +11,7 @@
 
 | contract | runtime | note |
 |---|---|---|
-| `ARDOnchainRegistry` | 9,922 | kernel; 14,654 bytes under the EIP-170 limit |
+| `ARDOnchainRegistry` | 9,939 | kernel; 14,637 bytes under the EIP-170 limit |
 | `SkillAdapter` | 1,248 | |
 | `TaskAdapter` | 1,933 | |
 | `AgentAdapter` | 1,288 | |
@@ -19,11 +19,11 @@
 
 ERC-165 ids: `IARDOnchainRegistry` `0x881908a5`, `IARDKindAdapter` `0x67bde273`, skill kernel `0x734553a6`, tender kernel `0xc319d532` (the vendored neutral interfaces reproduce the ids the real tokens declare; asserted in `ARDAdaptersTest`).
 
-## Foundry suites — 43 tests, 0 failures
+## Foundry suites — 44 tests, 0 failures
 
 Fixtures: the real `SkillToken`, `TaskToken` + `TaskVault` and `AIDRegistry` + `MockIdentityRegistry8004` vendored under `test/fixtures/` (commits in `test/fixtures/README.md`).
 
-`ARDRecordsTest` (20): register each kind; `Registered` event; unknown kind, empty descriptor, missing anchor, non-controller, wrong kind for an anchor; one record per anchor even under another kind; agent and registry anchors of one address do not collide; only an address registers itself as agent; an agent record needs no identity registration; descriptor update by controller only, zero hash and unknown record rejected; status transitions and the terminality of `Retired`; controller follows a token transfer and is never cached; a burned anchor reports a zero controller and blocks mutation; kind registration owner-only, write-once, adapter-checked; ownership transfer and renounce; views revert on unknown records; `supportsInterface`.
+`ARDRecordsTest` (21): register each kind; `Registered` event with the attestor; unknown kind, empty descriptor, missing anchor, non-controller, wrong kind for an anchor; one record per anchor even under another kind; agent and registry anchors of one address do not collide; only an address registers itself as agent; an agent record needs no identity registration; descriptor update by controller only, zero hash and unknown record rejected; status transitions and the terminality of `Retired`; controller follows a token transfer and is never cached, while the attestor stays with the committing controller until the new controller commits a descriptor (the same hash is accepted; status changes and later transfers leave the attestor alone); a burned anchor reports a zero controller and blocks mutation; kind registration owner-only, write-once, adapter-checked; ownership transfer and renounce; views revert on unknown records; `supportsInterface`.
 
 `ARDClaimsTest` (8): claim, duplicate, second claimant, release and views; release keeps the index consistent; 64-claim cap; domain validation (empty, uppercase, leading or trailing dot, empty label, underscore, space, non-ASCII, 254 bytes rejected; punycode, hyphenated labels and a single label accepted); signed claim by an EOA then nonce advance and replay failure; expired, wrong-domain, wrong-signer and malformed signatures; signed claim by an ERC-1271 contract account; domain separator and type hash.
 
@@ -31,7 +31,7 @@ Fixtures: the real `SkillToken`, `TaskToken` + `TaskVault` and `AIDRegistry` + `
 
 `ARDVectorsTest` (5): kind ids, record ids (five chains), the EIP-712 domain claim vector accepted by a registry deployed at the vector's address and chain, descriptor hashes as SHA-256 of the canonical bytes with the alias entry equal to the authored entry, interface ids.
 
-## Gateway end-to-end — 19 steps, PASS (`node tools/gateway/test.js`)
+## Gateway end-to-end — 20 steps, PASS (`node tools/gateway/test.js`)
 
 On anvil (chain 31337) with the real kernel, adapters, skill token, task token and AID registry:
 
@@ -50,16 +50,19 @@ On anvil (chain 31337) with the real kernel, adapters, skill token, task token a
 13. `/.well-known/ard.json`: the gateway lists itself and every served record
 14. ARD conformance CLI, manifest mode with JSON Schema: PASS, 0 errors, 0 warnings
 15. ARD conformance CLI, registry mode: PASS, 0 errors, 0 warnings
-16. skill transferred to mallory: binding `contested`, canonical URN stale, served under the alias
-17. skill package updated under the old descriptor: provenance mismatch → level 1
-18. tender cancelled → level 1
-19. agent record retired → dropped from search, still inspectable at `/records/<id>`
+16. skill transferred to mallory: the descriptor alice committed is unadopted (`attestor` alice, controller mallory) → excluded from search and listing, inspectable at `/records/<id>` with `value:adopted: false`
+17. mallory re-commits the same descriptor hash with `updateDescriptor`: adopted, `value:adopted: true`, binding `contested`, canonical URN stale, served under the alias at level 2
+18. skill package updated under the old descriptor: provenance mismatch → level 1
+19. tender cancelled → level 1
+20. agent record retired → dropped from search, still inspectable at `/records/<id>`
 
 The last run is recorded in `docs/gateway-e2e-last-run.json`.
 
-## Sepolia deployment — 2026-10-15, 30 transactions, all succeeded
+## Sepolia deployment — kernel v1.1 (2026-10-16), 15 transactions, all succeeded
 
-Chain 11155111, deployer `0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25`, blocks 11918355–11919033 (state read at 11919047). Kernel, four adapters, the reference AID registry and the reference skill token deployed and verified on Sourcify (exact match, all seven); four kinds registered; one record per kind anchored to the reference skill token (#1), the live token-bound tender kernel (#17, 0.001 ETH escrowed), the deployer's address bound to agentId 10855 on the official ERC-8004 Identity Registry, and the gateway endpoint; `finchip.ai` and `registry.finchip.ai` claimed; skill transferred to a second holder, who then replaced the skill descriptor and claimed `finchip.ai` as well; tender cancelled; the other three descriptors replaced by the deployer. The gateway served the four records and the conformance CLI passed in manifest mode (0 errors, 0 warnings, 2 informational) and registry mode (0 errors, 0 warnings). Gas: Sepolia's current schedule charged 15.66 M for the kernel deployment (9,922 runtime bytes) and 4.9–9.4 M per `register` with a 1.2–2.2 KB `data:` descriptor — several times anvil's default schedule — so all limits were taken from live `eth_estimateGas` calls. Full tables: `docs/sepolia-evidence.md`, `deployments/sepolia-cases.json`, `docs/gateway-sepolia-last-run.json`.
+Chain 11155111, deployer `0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25`, blocks 11924570–11924660 (state read at 11924668; the unadopted state at 11924598). The v1.1 kernel (`0x126795eCa2A10ea5B2d065a8049e01B6fcDAaa78`, 9,939 runtime bytes, Sourcify exact match) was deployed and the four kinds registered against the adapters of the first deployment; a new tender (#18, 0.001 ETH escrowed, live) was minted on the live tender kernel; one record per kind registered — the skill record by the address holding skill #1 at the time, with a descriptor that already names the deployer as `value:controller` and payee; `finchip.ai` and `registry.finchip.ai` claimed by the deployer. The skill was then transferred to the deployer: the gateway excluded the record (`descriptor not adopted by the current controller`), `GET /records/<id>` reported `consistent: true`, `adopted: false`, controller = deployer, attestor = holder, and search did not return it. The deployer re-committed the same descriptor hash (`updateDescriptor`, 233,165 gas): attestor = deployer, record served again. Conformance CLI: PASS in manifest mode (0 errors, 0 warnings) and registry mode (0 errors, 0 warnings) in both states; with the acknowledgment projection every record is `verified` under its canonical URN. Gas: 15.69 M for the kernel deployment, 5.5–8.2 M per `register`, all limits from live `eth_estimateGas`. Full tables: `docs/sepolia-evidence.md`, `deployments/sepolia-cases.json`, `docs/gateway-sepolia-last-run.json`.
+
+The first deployment (2026-10-15, kernel `0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A`, v0.3, 30 transactions: deployment of the kernel and the six contracts reused above, records, claims by two controllers, a transfer, a cancellation and four descriptor replacements, conformance PASS in both modes) is kept in the same files under `previousRun` / `previousKernel` and in the appendix of `docs/sepolia-evidence.md`.
 
 ## Stated limitations
 

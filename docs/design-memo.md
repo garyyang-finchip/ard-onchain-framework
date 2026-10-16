@@ -1,6 +1,6 @@
-# ARD Onchain — design memo v0.2
+# ARD Onchain — design memo v0.3
 
-Status: design round 3 (2026-10-13); filed as ethereum/ERCs#2073, assigned ERC-8444 and merged as a Draft on 2026-10-15, deployed on Sepolia the same day (`docs/sepolia-evidence.md`). Companion to `ERCS/erc-8444.md`; the ERC text is normative, this memo records the reasoning and the decisions log.
+Status: design round 4 (2026-10-16); filed as ethereum/ERCs#2073, assigned ERC-8444 and merged as a Draft on 2026-10-15, deployed on Sepolia the same day; round 4 adds descriptor adoption after the first thread review (decision 11) and redeploys the kernel on Sepolia with the adoption demonstration on chain (`docs/sepolia-evidence.md`). Companion to `ERCS/erc-8444.md`; the ERC text is normative, this memo records the reasoning and the decisions log.
 
 ## 1. One sentence
 
@@ -18,11 +18,12 @@ A fourth, derived decision: every ARD entry is already a dormant value record (L
 
 ## 3. Object model
 
-- **Record** = kind + anchor `(chainId, target, id)` + `descriptorHash` + `descriptorURI` + canonical `urn` + status (`Active`, `Suspended`, `Retired` terminal). `recordId = keccak256(abi.encode(chainId, target, id))`; one record per anchor; same-chain anchors only.
+- **Record** = kind + anchor `(chainId, target, id)` + `descriptorHash` + `descriptorURI` + canonical `urn` + status (`Active`, `Suspended`, `Retired` terminal) + `attestor` (the controller that committed the current descriptor; set by `register` and by every `updateDescriptor`). `recordId = keccak256(abi.encode(chainId, target, id))`; one record per anchor; same-chain anchors only.
 - **Controller** = derived by the kind adapter at call time, never stored. Skill and task: the token owner (the seller / the demander), not the update authority or the acceptance authority. Agent and registry: the address itself.
-- **Descriptor** = the ARD entry plus `value:` members. Three member classes: publication (`@context`, `@id`, `identifier`, `trustManifest`: set by whoever publishes the entry), resolved (`value:anchor`, `value:binding`, `value:level`, `value:status`, `value:aliases`, `value:canonical`, `value:stale`, `value:claimedUrn`, `value:registry`, `value:descriptorHash`: computed by resolvers), content (everything else). `descriptorHash = SHA-256(JCS(content members))`. A gateway alias entry therefore hashes to the same value as the controller's own entry.
+- **Adoption** = `attestor == controllerOf`. Control is the right to change the descriptor; adoption is the fact that the current controller committed the one being served. After a transfer the record is unadopted until the new controller calls `updateDescriptor` (the same hash is accepted), and resolvers withhold it from search and listing meanwhile. Decided by transaction senders, never by the authored `value:controller`.
+- **Descriptor** = the ARD entry plus `value:` members. Three member classes: publication (`@context`, `@id`, `identifier`, `trustManifest`: set by whoever publishes the entry), resolved (`value:anchor`, `value:binding`, `value:level`, `value:status`, `value:aliases`, `value:canonical`, `value:stale`, `value:claimedUrn`, `value:registry`, `value:descriptorHash`, `value:adopted`: computed by resolvers), content (everything else). `descriptorHash = SHA-256(JCS(content members))`. A gateway alias entry therefore hashes to the same value as the controller's own entry.
 - **Binding** of (domain, address): claims onchain (`claimDomain` / EIP-712 `claimDomainBySig` with ERC-1271), acknowledgment off-chain (`value:controllers` or an entry's `value:controller` in the domain's `/.well-known/ard.json`), states computed by resolvers: `unbound` / `claimed` / `verified` / `contested`; a record's `value:binding` reports `third-party` for `unbound` and `none` without a URN.
-- **Level**: L0 no record; L1 Active record; L2 Active, adapter `backed`, and for skill/task the descriptor's `value:provenance.packageDigest` equals the adapter's anchor hint. Levels and binding states are orthogonal; clients see (level, binding, credit).
+- **Level**: L0 no record; L1 Active record; L2 Active, adapter `backed`, and for skill/task the descriptor's `value:provenance.packageDigest` equals the adapter's anchor hint. Levels and binding states are orthogonal; clients see (level, binding, credit). Adoption is orthogonal to both and is a precondition for being served, not a level.
 
 ## 4. Kind adapters
 
@@ -37,9 +38,9 @@ The registry discriminator (`id = keccak256(endpointURL)` recommended) keeps an 
 
 ## 5. Resolver and gateway
 
-A gateway is a conformant ARD registry over an index built from `Registered` events: it fetches each descriptor, drops hash mismatches, computes binding, canonical URN, aliases, level and status, and serves `POST /search` (with `auto` / `referrals` / `none`), `POST /explore`, `GET /agents` and `/.well-known/ard.json` (listing itself as `application/ai-registry+json`). Every served record carries `value:anchor` and `value:descriptorHash`; any client can reproduce the gateway's work against the chain or a second gateway. The reference gateway passes the official ARD conformance CLI in schema mode (see `docs/test-record.md`).
+A gateway is a conformant ARD registry over an index built from `Registered` events: it fetches each descriptor, drops hash mismatches and unadopted records (both stay inspectable at `GET /records/<id>`), computes binding, canonical URN, aliases, level, status and adoption, and serves `POST /search` (with `auto` / `referrals` / `none`), `POST /explore`, `GET /agents` and `/.well-known/ard.json` (listing itself as `application/ai-registry+json`). Every served record carries `value:anchor`, `value:descriptorHash` and `value:adopted`; any client can reproduce the gateway's work against the chain or a second gateway. The reference gateway passes the official ARD conformance CLI in schema mode (see `docs/test-record.md`).
 
-## 6. Decisions log (round 3)
+## 6. Decisions log (rounds 3–4)
 
 | # | question | ruling |
 |---|---|---|
@@ -52,7 +53,8 @@ A gateway is a conformant ARD registry over an index built from `Registered` eve
 | 7 | Alias encoding | CAIP string lowercased, `:` `/` `#` replaced by `-`; registry anchors carry `#<id hex>`. |
 | 8 | Records without a URN | Allowed; served under aliases only. |
 | 9 | Anti-spam stake | None. Gas plus the adapter's existence and controller checks suffice. |
-| 10 | Sepolia evidence | Four kinds, one claim with acknowledgment, one skill transfer producing a stale canonical URN, one tender closing. Pending deployment. |
+| 10 | Sepolia evidence | Four kinds, one claim with acknowledgment, one skill transfer producing a stale canonical URN, one tender closing. Deployed 2026-10-15; redeployed 2026-10-16 on the v1.1 kernel with the transfer → unadopted → adopted sequence (`docs/sepolia-evidence.md`). |
+| 11 | Descriptor after a controller change (thread review, 2026-10-15) | Control is not adoption. The kernel records the attestor on `register` and `updateDescriptor`; resolvers serve a record only while `attestor == controllerOf`, else `value:adopted: false`, excluded from search and listing, inspectable. Chosen over (a) documenting the exposure, which leaves a buyer advertising the seller's endpoint, terms and payee, and (b) comparing the authored `value:controller`, which a seller can pre-fill with the buyer; chosen as exclusion rather than an L1 demotion because a demoted record would still offer terms nobody currently stands behind. Re-committing the same hash is allowed so adoption costs one call. No interface change: ERC-165 id unchanged, `registrant` renamed `attestor`. Demonstrated on Sepolia: a descriptor that pre-names the transferee stays unadopted after the transfer; one same-hash `updateDescriptor` by the new controller (233 k gas) adopts it. |
 
 Other rulings taken while building: `Retired` is terminal and binds later holders (suspend to pause); the kind table is write-once and ownership can be renounced; `descriptorHash` must be nonzero; a domain string is accepted only in normalized form; at most 64 claimants per domain.
 

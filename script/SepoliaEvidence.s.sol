@@ -26,7 +26,10 @@ interface IIdentityRegistry8004 {
 ///                     tender on the live TaskToken (TASK_TOKEN), one identity bound to the official
 ///                     ERC-8004 Identity Registry (IDENTITY_REGISTRY_8004)
 ///        Records      the four records from deployments/sepolia-descriptors.json + a domain claim
-///        Transfer     the skill moves to SECOND_HOLDER: controller changes, canonical URN goes stale
+///        Transfer     the skill moves to SECOND_HOLDER: controller changes, canonical URN goes stale,
+///                     and the record is unadopted (attestor != controller) until the holder commits
+///        Adopt        run by the current holder: re-commits the served descriptor (same hash), so the
+///                     attestor becomes the controller and resolvers serve the record again
 ///        Close        the tender is cancelled: level drops to 1
 ///      State is kept in deployments/sepolia.json.
 contract SepoliaEvidence is Script {
@@ -173,6 +176,22 @@ contract SepoliaEvidence is Script {
     }
 
     // ---------------------------------------------------------------- phase 5
+
+    /// @dev Broadcast from the account that currently controls the skill (the transferee). Committing the
+    ///      descriptor the record already carries is enough: the kernel records msg.sender as the attestor.
+    function adopt() external {
+        string memory d = vm.readFile(string.concat(vm.projectRoot(), "/", DESC));
+        ARDOnchainRegistry reg = ARDOnchainRegistry(_addr(".registry"));
+        bytes32 recordId = reg.recordIdOf(_addr(".skillToken"), _state().readUint(".skillId"));
+        vm.startBroadcast();
+        reg.updateDescriptor(
+            recordId, d.readBytes32(".skill.descriptorHash"), d.readString(".skill.descriptorURI"), d.readString(".skill.identifier")
+        );
+        vm.stopBroadcast();
+        console2.log("skill descriptor adopted by", msg.sender);
+    }
+
+    // ---------------------------------------------------------------- phase 6
 
     function close() external {
         string memory s = _state();

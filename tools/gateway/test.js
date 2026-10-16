@@ -254,16 +254,33 @@ function conformance(args) {
     step('ARD conformance CLI (vendored, schema mode): manifest PASS — ' + summary(m.out));
     step('ARD conformance CLI (vendored): registry PASS — ' + summary(reg2.out));
 
-    // ---- transfer: controller follows the token, binding re-derived, canonical URN goes stale ---
+    // ---- transfer: the descriptor alice committed is no longer adopted -> out of discovery ----------
     await (await skills.connect(alice).transferFrom(A.alice, A.mallory, skillId)).wait();
     await gw.sync();
+    const skillRecordId = ard.recordId(chainId, await skills.getAddress(), skillId);
+    assert.strictEqual(gw.state.entries.find((e) => e['value:kind'] === 'skill'), undefined, 'unadopted skill is not served');
+    const unadopted = gw.state.excluded.find((x) => x.recordId === skillRecordId);
+    assert.ok(unadopted && unadopted.reasons.includes('descriptor not adopted by the current controller'), 'excluded as unadopted');
+    const inspect = await get(`${BASE}/records/${skillRecordId}`);
+    assert.strictEqual(inspect.body.consistent, true);
+    assert.strictEqual(inspect.body.adopted, false);
+    assert.strictEqual(inspect.body.entry['value:adopted'], false, 'inspectable with value:adopted false');
+    assert.strictEqual(inspect.body.record.controller.toLowerCase(), A.mallory);
+    assert.strictEqual(inspect.body.record.attestor.toLowerCase(), A.alice);
+    step('skill transferred to mallory: descriptor committed by alice is unadopted -> excluded from discovery, inspectable at /records');
+
+    // ---- adoption: the new controller commits the same descriptor again -> served, re-derived -------
+    await (await reg.connect(mallory).updateDescriptor(skillRecordId, h(skillDesc), dataUri(skillDesc), skillDesc.identifier)).wait();
+    await gw.sync();
     const skillAfter = gw.state.entries.find((e) => e['value:kind'] === 'skill');
+    assert.ok(skillAfter, 'served again once mallory adopted it');
+    assert.strictEqual(skillAfter['value:adopted'], true);
     assert.strictEqual(skillAfter['value:binding'], 'contested', 'mallory claimed alice.example but is not acknowledged');
     assert.strictEqual(skillAfter.identifier, skillAfter['value:aliases'][0]);
     assert.deepStrictEqual(skillAfter['value:stale'], ['urn:air:alice.example:skills:one']);
     assert.strictEqual(skillAfter['value:canonical'], undefined);
     assert.strictEqual(skillAfter['value:level'], 2);
-    step('skill transferred to mallory: binding contested, canonical URN stale, served under alias');
+    step('mallory re-committed the descriptor (same hash): adopted, binding contested, canonical URN stale, served under alias');
 
     // provenance drift: the publisher (alice, update authority) changes the package -> hint != stated -> level 1
     await (await skills.connect(alice).updateSkill(skillId, skillMd, sha256Hex(ethers.toUtf8Bytes('new package')))).wait();

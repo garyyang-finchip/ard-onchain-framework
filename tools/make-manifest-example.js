@@ -26,6 +26,7 @@ const aliasEntry = {
   trustManifest: { identity: GATEWAY_DOMAIN },
   ...ard.authoredDescriptor(skill),
   'value:anchor': caip,
+  'value:adopted': true,
   'value:canonical': skill.identifier,
   'value:aliases': [alias],
   'value:binding': 'verified',

@@ -13,6 +13,7 @@ const PUBLICATION_MEMBERS = ['@context', '@id', 'identifier', 'trustManifest'];
 /** Members added by resolvers. They are never part of the hashed descriptor. */
 const RESOLVED_MEMBERS = [
   'value:anchor',
+  'value:adopted',
   'value:binding',
   'value:level',
   'value:status',

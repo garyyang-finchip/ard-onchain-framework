@@ -1,11 +1,13 @@
 {
   "chainId": 11155111,
   "network": "sepolia",
-  "snapshotBlock": 11919047,
+  "version": "1.1 (attestor / adoption)",
+  "deployedAt": "2026-10-16",
+  "snapshotBlock": 11924668,
   "deployer": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
   "secondHolder": "0x81EcAc174eba407efEb6698927d16dC6494CA60C",
   "contracts": {
-    "ARDOnchainRegistry": "0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A",
+    "ARDOnchainRegistry": "0x126795eCa2A10ea5B2d065a8049e01B6fcDAaa78",
     "SkillAdapter": "0x08Be92a9446592fAeaaB976556e09e028662F12F",
     "TaskAdapter": "0x0BAB1fEE185A4803a1aC65F6dA59941eeCaE71dB",
     "AgentAdapter": "0x38898d038F4a8fCE3e13447bE7Eb1ECd128cE25C",
@@ -13,6 +15,14 @@
     "AIDRegistry": "0x36E4a7BDe8a9D7d445042495180b64C7AF77Fd7E",
     "SkillToken": "0x82F20280D49F1DDC67e1840339dBbc534FEC8F97"
   },
+  "reusedFromFirstRun": [
+    "SkillAdapter",
+    "TaskAdapter",
+    "AgentAdapter",
+    "RegistryAdapter",
+    "AIDRegistry",
+    "SkillToken"
+  ],
   "external": {
     "TaskToken": "0xA62059A498E40C4Ae4aF926E2B00C1Ff122bDdb7",
     "IdentityRegistry8004": "0x8004A818BFB912233c491871b3d84c89A494BD9e"
@@ -41,21 +51,22 @@
       "id": 1,
       "skillMd": "0x30a18d1d73329fa02c81bca3e9c98ccb163325d5fafdefce913d1beee2fbad42",
       "skillPkg": "0x2473da0a68d9f615c2167ec67af862665543c049bb254bbe3100a777a1c3144d",
-      "holder": "0x81EcAc174eba407efEb6698927d16dC6494CA60C"
+      "holder": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "holderBeforeTransfer": "0x81EcAc174eba407efEb6698927d16dC6494CA60C"
     },
     "task": {
       "token": "0xA62059A498E40C4Ae4aF926E2B00C1Ff122bDdb7",
-      "id": 17,
+      "id": 18,
       "taskMd": "0xea83ec60fee323f9d4bb065bffbe3b5756415471f43df3737305530aa42ad8ef",
       "taskHash": "0x69896dd46399e6362a246b981932e09569e79bac3ec3b3056d99b12295efa73b",
       "terms": {
-        "now": 1792044520,
-        "settleBy": 1797228520,
+        "now": 1792118545,
+        "settleBy": 1797302545,
         "judgmentWindow": 604800,
         "rewardPerCompletion": "500000000000000",
         "maxCompletions": 2
       },
-      "cancelled": true,
+      "cancelled": false,
       "escrowWei": "1000000000000000"
     },
     "agent": {
@@ -77,31 +88,33 @@
       "anchor": "eip155:11155111/erc721:0x82f20280d49f1ddc67e1840339dbbc534fec8f97/1",
       "target": "0x82F20280D49F1DDC67e1840339dBbc534FEC8F97",
       "id": "1",
-      "descriptorHash": "0x42f1025b57d655cccfa3f5ee3853b81047d0415d89c9b8b25d7eea6702789551",
-      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F\u2026 (1901 chars, data: URI)",
+      "descriptorHash": "0x4677233ba86ed4866e3fd67d02e61ee8069bb9ddf858520e3480267eddc803b4",
+      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F… (1785 chars, data: URI)",
       "urn": "urn:air:finchip.ai:skills:daily-finance-brief",
       "status": "Active",
-      "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
-      "updatedAt": 1792050420,
-      "controller": "0x81EcAc174eba407efEb6698927d16dC6494CA60C",
+      "attestor": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "updatedAt": 1792119684,
+      "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "adopted": true,
       "backed": true,
       "anchorHint": "0x2473da0a68d9f615c2167ec67af862665543c049bb254bbe3100a777a1c3144d",
       "descriptorMatchesAuthored": true
     },
     "task": {
-      "recordId": "0xd9f727824f1c84ed9b5315a1f3c0f31802402702d0e8a1d7b5b954133e309000",
+      "recordId": "0x5d53381c2ffb3fd1ad168d367c91834cdfae0a378e50c2554001565bd17fa8e5",
       "kind": "0x119c021f95332a1e2d06adbfe8e298dc2484ac0daa16e4cd837d8de82fbba87c",
-      "anchor": "eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/17",
+      "anchor": "eip155:11155111/erc721:0xa62059a498e40c4ae4af926e2b00c1ff122bddb7/18",
       "target": "0xA62059A498E40C4Ae4aF926E2B00C1Ff122bDdb7",
-      "id": "17",
-      "descriptorHash": "0x2ddc8d8e31338f73da332675b30758c0ada638b745316808459be06030209d83",
-      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F\u2026 (2193 chars, data: URI)",
+      "id": "18",
+      "descriptorHash": "0x6790eb2be59414549d1a8f3379338361d5c586b7dceea0d31df1caa4d9657831",
+      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F… (2077 chars, data: URI)",
       "urn": "urn:air:finchip.ai:tenders:oracle-basis-feed",
       "status": "Active",
-      "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
-      "updatedAt": 1792049652,
+      "attestor": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "updatedAt": 1792118796,
       "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
-      "backed": false,
+      "adopted": true,
+      "backed": true,
       "anchorHint": "0x69896dd46399e6362a246b981932e09569e79bac3ec3b3056d99b12295efa73b",
       "descriptorMatchesAuthored": true
     },
@@ -111,13 +124,14 @@
       "anchor": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
       "target": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
       "id": "0",
-      "descriptorHash": "0x5a081d12a48970b134096ce11271b8af4b7f656caa1a59b094c5fab59e48b4a3",
-      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F\u2026 (1541 chars, data: URI)",
+      "descriptorHash": "0x8d3f624c8fa265fc791d90c79bc31b10a0843df36a9d7520f537d9f0876f25f0",
+      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F… (1541 chars, data: URI)",
       "urn": "urn:air:finchip.ai:agents:finch-analyst",
       "status": "Active",
-      "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
-      "updatedAt": 1792049652,
+      "attestor": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "updatedAt": 1792118796,
       "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "adopted": true,
       "backed": true,
       "anchorHint": "0x0000000000000000000000000000000000000000000000000000000000000000",
       "descriptorMatchesAuthored": true
@@ -128,22 +142,41 @@
       "anchor": "eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25#fa187c889e870315fda7522dc8e0bfded5d31e855837bab516a2e5f99f27dd6a",
       "target": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
       "id": "113121475975165909900932156712680151072694951570286427139054365066607513296234",
-      "descriptorHash": "0x1c771e2b2cbf98d3894bc871a7d832f67ddece7af2d48d51a64f9474dde12efa",
-      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F\u2026 (1249 chars, data: URI)",
+      "descriptorHash": "0xb631b153d2e4a6c640094c30eb35d14439f281f358c2b8cc9a6c7770235cf6bb",
+      "descriptorURI": "data:application/json;base64,eyJAY29udGV4dCI6WyJodHRwczovL2F… (1249 chars, data: URI)",
       "urn": "urn:air:registry.finchip.ai:registry:sepolia",
       "status": "Active",
-      "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
-      "updatedAt": 1792049652,
+      "attestor": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "updatedAt": 1792118796,
       "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "adopted": true,
       "backed": false,
       "anchorHint": "0x0000000000000000000000000000000000000000000000000000000000000000",
       "descriptorMatchesAuthored": true
     }
   },
+  "adoptionDemonstration": {
+    "recordId": "0x4683d8e06dbef3a5e684813f14d46eeab4f8d6d1d6382bf02b70cb5469d0c4b8",
+    "registeredBy": "0x81EcAc174eba407efEb6698927d16dC6494CA60C",
+    "descriptorNamesAsController": "did:pkh:eip155:11155111:0xccfdee360c9cdc79005e4dda9845f3a24ee37a25",
+    "afterTransfer": {
+      "block": 11924598,
+      "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "attestor": "0x81EcAc174eba407efEb6698927d16dC6494CA60C",
+      "adopted": false,
+      "gatewayExclusionReason": "descriptor not adopted by the current controller"
+    },
+    "afterAdoption": {
+      "block": 11924668,
+      "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "attestor": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+      "adopted": true,
+      "descriptorHashUnchanged": true
+    }
+  },
   "domainClaims": {
     "finchip.ai": [
-      "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
-      "0x81EcAc174eba407efEb6698927d16dC6494CA60C"
+      "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25"
     ],
     "registry.finchip.ai": [
       "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25"
@@ -152,28 +185,73 @@
   "descriptors": {
     "skill": {
       "identifier": "urn:air:finchip.ai:skills:daily-finance-brief",
-      "descriptorHash": "0x42f1025b57d655cccfa3f5ee3853b81047d0415d89c9b8b25d7eea6702789551"
+      "descriptorHash": "0x4677233ba86ed4866e3fd67d02e61ee8069bb9ddf858520e3480267eddc803b4"
     },
     "task": {
       "identifier": "urn:air:finchip.ai:tenders:oracle-basis-feed",
-      "descriptorHash": "0x2ddc8d8e31338f73da332675b30758c0ada638b745316808459be06030209d83"
+      "descriptorHash": "0x6790eb2be59414549d1a8f3379338361d5c586b7dceea0d31df1caa4d9657831"
     },
     "agent": {
       "identifier": "urn:air:finchip.ai:agents:finch-analyst",
-      "descriptorHash": "0x5a081d12a48970b134096ce11271b8af4b7f656caa1a59b094c5fab59e48b4a3"
+      "descriptorHash": "0x8d3f624c8fa265fc791d90c79bc31b10a0843df36a9d7520f537d9f0876f25f0"
     },
     "registry": {
       "identifier": "urn:air:registry.finchip.ai:registry:sepolia",
-      "descriptorHash": "0x1c771e2b2cbf98d3894bc871a7d832f67ddece7af2d48d51a64f9474dde12efa"
+      "descriptorHash": "0xb631b153d2e4a6c640094c30eb35d14439f281f358c2b8cc9a6c7770235cf6bb"
     }
   },
   "verification": {
     "sourcify": {
-      "date": "2026-10-15",
-      "result": "exact_match (creation and runtime) for all seven contracts",
+      "date": "2026-10-16",
+      "result": "exact_match (creation and runtime) for the v1.1 kernel; the six reused contracts keep their 2026-10-15 exact matches",
       "api": "https://sourcify.dev/server/v2/verify/11155111/<address>",
       "explorer": "https://repo.sourcify.dev/11155111/<address>"
     },
-    "etherscan": "pending (API key); standard-JSON inputs reproduce the deployed creation bytecode byte for byte"
+    "etherscan": "forwarded by Sourcify for the v1.1 kernel; otherwise pending (API key); standard-JSON inputs reproduce the deployed creation bytecode byte for byte"
+  },
+  "previousKernel": {
+    "ARDOnchainRegistry": "0x10c6d098F016Aeea6B0D52c68e5a8acB320a8A8A",
+    "deployedAt": "2026-10-15",
+    "snapshotBlock": 11919047,
+    "note": "first deployment (v0.3 kernel, registrant without adoption semantics); superseded by the kernel above, kept on chain as history; its records, claims and transactions are in previousRun of sepolia-cases.json and in docs/sepolia-evidence.md",
+    "records": {
+      "skill": {
+        "recordId": "0x4683d8e06dbef3a5e684813f14d46eeab4f8d6d1d6382bf02b70cb5469d0c4b8",
+        "status": "Active",
+        "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+        "controller": "0x81EcAc174eba407efEb6698927d16dC6494CA60C",
+        "descriptorHash": "0x42f1025b57d655cccfa3f5ee3853b81047d0415d89c9b8b25d7eea6702789551"
+      },
+      "task": {
+        "recordId": "0xd9f727824f1c84ed9b5315a1f3c0f31802402702d0e8a1d7b5b954133e309000",
+        "status": "Active",
+        "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+        "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+        "descriptorHash": "0x2ddc8d8e31338f73da332675b30758c0ada638b745316808459be06030209d83"
+      },
+      "agent": {
+        "recordId": "0xb2e9339ea195ca1d497e808392a6946e8fdd297149d6aed5a092c8d20e476489",
+        "status": "Active",
+        "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+        "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+        "descriptorHash": "0x5a081d12a48970b134096ce11271b8af4b7f656caa1a59b094c5fab59e48b4a3"
+      },
+      "registry": {
+        "recordId": "0x2abc385a21e2dc7727d162bcfca7488dd794d6b0e199a4a7f45a87b23843418c",
+        "status": "Active",
+        "registrant": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+        "controller": "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+        "descriptorHash": "0x1c771e2b2cbf98d3894bc871a7d832f67ddece7af2d48d51a64f9474dde12efa"
+      }
+    },
+    "domainClaims": {
+      "finchip.ai": [
+        "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25",
+        "0x81EcAc174eba407efEb6698927d16dC6494CA60C"
+      ],
+      "registry.finchip.ai": [
+        "0xCcFDEE360c9CDc79005e4ddA9845f3A24EE37A25"
+      ]
+    }
   }
 }

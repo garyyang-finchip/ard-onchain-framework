@@ -59,14 +59,23 @@ function hintMatchesProvenance(kind, hintHex, authored) {
   return stated.toLowerCase() === `sha256:${hintHex.slice(2).toLowerCase()}`;
 }
 
+/** A record is adopted when the controller that committed its current descriptor is still its controller. */
+function isAdopted(rec) {
+  if (!rec.controller || rec.controller === ethers.ZeroAddress || !rec.attestor) return false;
+  return rec.attestor.toLowerCase() === rec.controller.toLowerCase();
+}
+
 /**
  * Build the served view of one record.
- * @param rec   { recordId, kind, target, id, descriptorHash, descriptorURI, urn, status, controller, backed, anchorHint }
+ * @param rec   { recordId, kind, target, id, descriptorHash, descriptorURI, urn, status, attestor, controller, backed, anchorHint }
  * @param ctx   { chainId, registryAddress, gatewayDomain, claimsOf(domainHash)->address[], fetch options }
+ * The result carries `consistent` (descriptor fetched and hash matches) and `adopted` (attestor == controller);
+ * gateways serve a record in discovery only when both hold.
  */
 async function resolveRecord(rec, ctx) {
   const kind = KIND_BY_ID[rec.kind] || rec.kind;
-  const out = { recordId: rec.recordId, kind, consistent: false, reasons: [] };
+  const out = { recordId: rec.recordId, kind, consistent: false, adopted: isAdopted(rec), reasons: [] };
+  if (!out.adopted) out.reasons.push('descriptor not adopted by the current controller');
 
   const authoredRaw = rec.descriptorURI ? await fetchJson(rec.descriptorURI, ctx) : null;
   if (!authoredRaw) {
@@ -115,6 +124,7 @@ async function resolveRecord(rec, ctx) {
     trustManifest: { identity: canonical ? ard.urnPublisher(canonical) : ctx.gatewayDomain },
     ...content,
     'value:anchor': caip,
+    'value:adopted': out.adopted,
     'value:aliases': [alias],
     'value:binding': binding,
     'value:level': level,
@@ -132,4 +142,4 @@ async function resolveRecord(rec, ctx) {
   return out;
 }
 
-module.exports = { resolveRecord, bindingState, fetchJson, fetchManifest, hintMatchesProvenance, KIND_BY_ID, STATUS_NAMES };
+module.exports = { resolveRecord, isAdopted, bindingState, fetchJson, fetchManifest, hintMatchesProvenance, KIND_BY_ID, STATUS_NAMES };

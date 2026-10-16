@@ -88,7 +88,7 @@ async function createGateway(cfg) {
     for (const rec of records.values()) {
       const r = await resolveRecord(rec, ctx);
       byId.set(rec.recordId, { rec, resolved: r });
-      if (r.consistent && r.entry['value:status'] !== 'Retired') entries.push(r.entry);
+      if (r.consistent && r.adopted && r.entry['value:status'] !== 'Retired') entries.push(r.entry);
       else excluded.push({ recordId: rec.recordId, reasons: r.reasons.length ? r.reasons : ['retired'] });
     }
     state.entries = entries;
@@ -235,7 +235,7 @@ async function createGateway(cfg) {
         const id = rel.slice('/records/'.length);
         const hit = state.byId.get(id);
         if (!hit) return send(404, { errorCode: 'NOT_FOUND', message: 'unknown record' });
-        return send(200, { record: { ...hit.rec, id: String(hit.rec.id) }, consistent: hit.resolved.consistent, reasons: hit.resolved.reasons, entry: hit.resolved.entry || null });
+        return send(200, { record: { ...hit.rec, id: String(hit.rec.id) }, consistent: hit.resolved.consistent, adopted: hit.resolved.adopted, reasons: hit.resolved.reasons, entry: hit.resolved.entry || null });
       }
       if (req.method === 'POST' && (rel === '/search' || rel === '/explore')) {
         const chunks = [];
